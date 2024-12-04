@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="resources/shaders/default.frag">/Users/alexj/Documents/cs1230/projects-realtime-mitochondrialmembrane/resources/shaders/default.frag</file>
+    <file alias="resources/shaders/texture.frag">/Users/alexj/Documents/cs1230/projects-realtime-mitochondrialmembrane/resources/shaders/texture.frag</file>
+    <file alias="resources/shaders/default.vert">/Users/alexj/Documents/cs1230/projects-realtime-mitochondrialmembrane/resources/shaders/default.vert</file>
+    <file alias="resources/shaders/texture.vert">/Users/alexj/Documents/cs1230/projects-realtime-mitochondrialmembrane/resources/shaders/texture.vert</file>
+  </qresource>
+</RCC>
+

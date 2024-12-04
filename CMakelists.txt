@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Sets project name
-project(final_project LANGUAGES CXX C)
+project(projects_realtime LANGUAGES CXX C)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -27,29 +27,40 @@ include_directories(src)
 add_executable(${PROJECT_NAME}
     src/main.cpp
 
-    # the files to be compiled
+    src/realtime.cpp
+    src/mainwindow.cpp
+    src/settings.cpp
+    src/utils/scenefilereader.cpp
+    src/utils/sceneparser.cpp
 
-    # src/realtime.cpp
-    # src/mainwindow.cpp
-    # src/settings.cpp
-    # src/utils/scenefilereader.cpp
-    # src/utils/sceneparser.cpp
+    src/mainwindow.h
+    src/realtime.h
+    src/settings.h
+    src/utils/scenedata.h
+    src/utils/scenefilereader.h
+    src/utils/sceneparser.h
+    src/utils/shaderloader.h
+    src/utils/aspectratiowidget/aspectratiowidget.hpp
+    src/utils/camera.h src/utils/camera.cpp
+    src/shapes/Cube.h src/shapes/Cube.cpp
+    src/shapes/Cone.h src/shapes/Cone.cpp
+    src/shapes/Sphere.h src/shapes/Sphere.cpp
+    src/shapes/Cylinder.h src/shapes/Cylinder.cpp
+    src/shapes/shape.h
+    src/utils/realtimeutils.h src/utils/realtimeutils.cpp
+    src/shapes/mesh.h src/shapes/mesh.cpp
+    src/utils/bezier.h src/utils/bezier.cpp
 
-    # src/mainwindow.h
-    # src/realtime.h
-    # src/settings.h
-    # src/utils/scenedata.h
-    # src/utils/scenefilereader.h
-    # src/utils/sceneparser.h
-    # src/utils/shaderloader.h
-    # src/utils/aspectratiowidget/aspectratiowidget.hpp
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`
 add_subdirectory(glm)
 
 # GLEW: this creates its library and allows you to `#include "GL/glew.h"`
-add_library(StaticGLEW STATIC glew/src/glew.c)
+add_library(StaticGLEW STATIC glew/src/glew.c
+    src/utils/camera.h src/utils/camera.cpp
+
+)
 include_directories(${PROJECT_NAME} PRIVATE glew/include)
 
 # Specifies libraries to be linked (Qt components, glew, etc)
@@ -68,7 +79,9 @@ qt6_add_resources(${PROJECT_NAME} "Resources"
         "/"
     FILES
         resources/shaders/default.frag
+        resources/shaders/texture.frag
         resources/shaders/default.vert
+        resources/shaders/texture.vert
 )
 
 # GLEW: this provides support for Windows (including 64-bit)
