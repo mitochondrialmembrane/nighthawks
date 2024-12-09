@@ -14,6 +14,11 @@
 #include "shapes/mesh.h"
 #include "utils/shaderloader.h"
 #include "utils/realtimeutils.h"
+#include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+// #include "utils/pg.h"
+
+
 
 // ================== Project 5: Lights, Camera
 
@@ -229,6 +234,45 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
+/* PROCEDURAL GENERATION START */
+void Realtime::generateCity(WFCGrid &grid) {
+    const float tileSize = 2.f; // size of each grid cell
+
+    for (int y = 0; y < grid.height; y++) {
+        for (int x = 0; x < grid.width; x++) {
+            Tile& tile = grid.grid[y][x];
+            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize, 0.f, y * tileSize));
+
+            SceneMaterial mat;
+            mat.cAmbient = glm::vec4(0.0, 0.5, 0.0, 0.f);
+            mat.cDiffuse = glm::vec4(0.0, 1.0, 0.0, 0.f);
+            mat.cSpecular = glm::vec4(1.0, 1.0, 1.0, 0.f);
+            mat.shininess = 30.0;
+
+            switch (tile.type) {
+            case SMALL_BUILDING:
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 2.f, 1.f));
+                shapes.push_back(new Cube(modelMatrix, mat));
+                break;
+            case MEDIUM_BUILDING:
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 4.f, 1.f));
+                shapes.push_back(new Cube(modelMatrix, mat));
+                break;
+            case TALL_BUILDING:
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 8.f, 1.f));
+                shapes.push_back(new Cube(modelMatrix, mat));
+                break;
+            case PAVEMENT:
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 1.f, 1.f));
+                break;
+            default:
+                break;
+            }
+        }
+    }
+}
+/* PROCEDURAL GENERATION END */
+
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -244,6 +288,16 @@ void Realtime::sceneChanged() {
 
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
+
+    /* PROCEDURAL GENERATION START */
+    WFCGrid grid(10, 10); // 10 x 10 grid
+    while (!grid.isFullyCollapsed()) {
+        grid.collapse();
+    }
+
+    generateCity(grid);
+    /* PROCEDURAL GENERATION END */
+
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
