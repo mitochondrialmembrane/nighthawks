@@ -57,6 +57,7 @@ void main() {
 
     fragColor = vec4(finalColor, 1.0);
 }
+
 /**
 vec4 calculateMean(vec2 start, int boxSize) {
     vec4 mean = vec4(0,0,0,0);
