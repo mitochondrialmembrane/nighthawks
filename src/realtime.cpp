@@ -16,9 +16,6 @@
 #include "utils/realtimeutils.h"
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
-// #include "utils/pg.h"
-
-
 
 // ================== Project 5: Lights, Camera
 
@@ -35,8 +32,6 @@ Realtime::Realtime(QWidget *parent)
     m_keyMap[Qt::Key_D]       = false;
     m_keyMap[Qt::Key_Control] = false;
     m_keyMap[Qt::Key_Space]   = false;
-
-    // If you must use this function, do not edit anything above this
 }
 
 void Realtime::finish() {
@@ -122,10 +117,12 @@ void Realtime::initializeGL() {
     glBindVertexArray(0);
 
     makeFBO();
+
+    // generate the scene
+    generateScene();
 }
 
 void Realtime::paintGL() {
-    // Students: anything requiring OpenGL calls every frame should be done here
     // Clear screen color and depth before painting
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -394,6 +391,71 @@ void Realtime::generateCity(WFCGrid &grid) {
 }
 
 /* PROCEDURAL GENERATION END */
+
+/**
+ * @brief Realtime::generateScene
+ * bro idk
+ */
+void Realtime::generateScene() {
+    RenderData data;
+
+    // clean up old shape array
+    SceneParser::parse(settings.sceneFilePath, data);
+    RealtimeUtils::clearArrays(shapes, this);
+    for (Shape *shape : shapes) {
+        delete shape;
+    }
+
+    shapes.clear();
+    shapes.resize(data.shapes.size());
+
+    camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
+    // bezier = Bezier();
+
+    /* PROCEDURAL GENERATION START */
+    WFCGrid grid(20, 20); // 10 x 10 grid
+    while (!grid.isFullyCollapsed()) {
+        grid.collapse();
+    }
+
+    generateCity(grid);
+    /* PROCEDURAL GENERATION END */
+
+    // process shape data
+    for (int i = 0; i < data.shapes.size(); i++) {
+        RenderShapeData shape = data.shapes[i];
+
+        switch (shape.primitive.type) {
+        case PrimitiveType::PRIMITIVE_CUBE:
+            shapes[i] = new Cube(shape.ctm, shape.primitive.material);
+            break;
+        case PrimitiveType::PRIMITIVE_CONE:
+            shapes[i] = new Cone(shape.ctm, shape.primitive.material);
+            break;
+        case PrimitiveType::PRIMITIVE_CYLINDER:
+            shapes[i] = new Cylinder(shape.ctm, shape.primitive.material);
+            break;
+        case PrimitiveType::PRIMITIVE_SPHERE:
+            shapes[i] = new Sphere(shape.ctm, shape.primitive.material);
+            break;
+        case PrimitiveType::PRIMITIVE_MESH:
+            shapes[i] = new Mesh(shape.ctm, shape.primitive.material, shape.primitive.meshfile);
+            break;
+        }
+    }
+    // process light data
+    numLights = fmin(data.lights.size(), 8);
+    for (int i = 0; i < numLights; i++) {
+        lights[i] = data.lights[i];
+    }
+    // set global constants
+    k_a = data.globalData.ka;
+    k_s = data.globalData.ks;
+    k_d = data.globalData.kd;
+
+    RealtimeUtils::buildArrays(shapes, this, settings.shapeParameter1, settings.shapeParameter2);
+    update(); // asks for a PaintGL() call to occur
+}
 
 void Realtime::sceneChanged() {
     RenderData data;

@@ -80,5 +80,6 @@ private:
     GLuint m_fullscreen_vao;
 
     void generateCity(WFCGrid &grid);
+    void generateScene();
 
 };
