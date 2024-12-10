@@ -22,7 +22,7 @@ public:
     std::vector<std::vector<Tile>> grid;
 
     WFCGrid(int w, int h) : width(w), height(h) {
-        grid.resize(height, std::vector<Tile>(width, Tile{EMPTY, false, {EMPTY, SMALL_BUILDING, MEDIUM_BUILDING, TALL_BUILDING, PAVEMENT}}));
+        grid.resize(height, std::vector<Tile>(width, Tile{EMPTY, false, {SMALL_BUILDING, MEDIUM_BUILDING, TALL_BUILDING, PAVEMENT}}));
     }
 
     // Check if all cells are collapsed
@@ -83,9 +83,13 @@ private:
         // Example constraints
         switch (current) {
         case TALL_BUILDING:
-            neighbor.possibleStates.erase(std::remove(neighbor.possibleStates.begin(), neighbor.possibleStates.end(), TALL_BUILDING), neighbor.possibleStates.end());
+            neighbor.possibleStates.erase(std::remove(neighbor.possibleStates.begin(), neighbor.possibleStates.end(), EMPTY), neighbor.possibleStates.end());
+            neighbor.possibleStates.erase(std::remove(neighbor.possibleStates.begin(), neighbor.possibleStates.end(), SMALL_BUILDING), neighbor.possibleStates.end());
             break;
         case EMPTY:
+            break;
+        case SMALL_BUILDING:
+            neighbor.possibleStates.erase(std::remove(neighbor.possibleStates.begin(), neighbor.possibleStates.end(), TALL_BUILDING), neighbor.possibleStates.end());
             break;
         default:
             break;

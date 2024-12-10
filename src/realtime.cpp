@@ -237,15 +237,15 @@ void Realtime::resizeGL(int w, int h) {
 
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
-    const float tileSize = 2.f;
+    const float tileSize = 5.f;
 
     std::cout << "grid height: " << grid.height << std::endl;
     std::cout << "grid width: " << grid.width << std::endl;
 
-    const int protectedXStart = -5;
-    const int protectedXEnd = 5;
-    const int protectedYStart = -5;
-    const int protectedYEnd = 5;
+    const int protectedXStart = -3;
+    const int protectedXEnd = -1;
+    const int protectedYStart = -2;
+    const int protectedYEnd = 0;
 
     for (int y = 0; y < grid.height; y++) {
         for (int x = 0; x < grid.width; x++) {
@@ -257,7 +257,8 @@ void Realtime::generateCity(WFCGrid &grid) {
             }
 
             Tile& tile = grid.grid[y][x];
-            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 10, 0.f, y * tileSize - 10));
+
+            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 35.f, 0.f, y * tileSize - 45.f));
 
             SceneMaterial mat;
             mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f);
@@ -274,13 +275,16 @@ void Realtime::generateCity(WFCGrid &grid) {
             glm::mat4 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 1.f, 0.f));
             SceneMaterial doorMat;
             glm::mat4 doorMatrix;
+            SceneMaterial bottomMat;
+            SceneMaterial topMat;
+
 
             switch (tile.type) {
             case SMALL_BUILDING: {
                 mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
-                float height = 2.f + rand() % 2;
+                float height = 2.5f + rand() % 2;
                 modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, height, 1.f));
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
                 shapes.push_back(new Cube(modelMatrix, mat));
                 break;
             }
@@ -288,26 +292,41 @@ void Realtime::generateCity(WFCGrid &grid) {
                 mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
                 float height = 4.f + rand() % 2;
                 modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.5f, height, 1.5f));
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
                 shapes.push_back(new Cube(modelMatrix, mat));
                 break;
             }
             case TALL_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.2, 0.2, 0.4, 1.0); // Glass color
-                float height = 8.f + rand() % 3;
+                float totalHeight = 8.f + rand() % 3; // Total building height
+                float bottomHeight = totalHeight / 2.f; // Height of the bottom layer
+                float topHeight = totalHeight - bottomHeight; // Height of the top layer
 
-                // Align building bottom
-                glm::mat4 baseMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f));
-                glm::mat4 scaledMatrix = glm::scale(baseMatrix, glm::vec3(2.f, height, 2.f));
-                shapes.push_back(new Cube(scaledMatrix, mat));
+                // Bottom layer material (teal)
+                bottomMat = mat;
+                bottomMat.cDiffuse = glm::vec4(0.0, 0.5, 0.5, 1.0); // Teal color
 
-                // Add antennae
+                // Top layer material (red)
+                topMat = mat;
+                topMat.cDiffuse = glm::vec4(0.8, 0.1, 0.1, 1.0); // Red color
+
+                // Bottom layer (with door)
+                glm::mat4 bottomMatrix = glm::translate(modelMatrix, glm::vec3(0.f, bottomHeight / 2.f, 0.f));
+                glm::mat4 bottomScaledMatrix = glm::scale(bottomMatrix, glm::vec3(5.f, bottomHeight, 5.f));
+                shapes.push_back(new Cube(bottomScaledMatrix, bottomMat));
+
+                // Top layer (with windows)
+                glm::mat4 topMatrix = glm::translate(modelMatrix, glm::vec3(0.f, bottomHeight + topHeight / 2.f, 0.f));
+                glm::mat4 topScaledMatrix = glm::scale(topMatrix, glm::vec3(5.f, topHeight, 5.f));
+                shapes.push_back(new Cube(topScaledMatrix, topMat));
+
+                // Optional: Add details like windows or doors by adding more shapes here
+
+                // Add antennae on top layer
                 roofMat = mat;
                 roofMat.cDiffuse = glm::vec4(0.7, 0.7, 0.7, 1.0); // Metal
 
-                // Use baseMatrix (unscaled) to position antennae on top
-                glm::mat4 antennaBaseMatrix = glm::translate(baseMatrix, glm::vec3(0.f, height / 2.f, 0.f));
-
+                // Use topMatrix to position antennae on top
+                glm::mat4 antennaBaseMatrix = glm::translate(topMatrix, glm::vec3(0.f, topHeight / 2.f, 0.f));
                 glm::mat4 antennaMatrix1 = glm::translate(antennaBaseMatrix, glm::vec3(-0.3f, 1.f, -0.3f));
                 antennaMatrix1 = glm::scale(antennaMatrix1, glm::vec3(0.25f, 2.f, 0.25f));
                 shapes.push_back(new Cylinder(antennaMatrix1, roofMat));
@@ -316,13 +335,9 @@ void Realtime::generateCity(WFCGrid &grid) {
                 antennaMatrix2 = glm::scale(antennaMatrix2, glm::vec3(0.25f, 1.5f, 0.25f));
                 shapes.push_back(new Cylinder(antennaMatrix2, roofMat));
 
-                // Example: Adding a Door
-                doorMatrix = glm::translate(baseMatrix, glm::vec3(0.f, 0.0f, 1.f)); // Centered on the front face
-                doorMatrix = glm::scale(doorMatrix, glm::vec3(0.5f, 0.4f, 0.1f)); // Thin and tall door
-                doorMat.cDiffuse = glm::vec4(1.f, 0.f, 0.f, 1.0); // Wood color
-                shapes.push_back(new Cube(doorMatrix, doorMat));
                 break;
             }
+
             }
         }
     }
@@ -524,8 +539,8 @@ void Realtime::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Space]) camera.translate(glm::vec3(0, delta, 0));
     if (m_keyMap[Qt::Key_Control]) camera.translate(glm::vec3(0, -delta, 0));
 
-    glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
-    camera.translate(bezierTranslate);
+    // glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
+    // camera.translate(bezierTranslate);
 
     update(); // asks for a PaintGL() call to occur
 }
