@@ -117,6 +117,9 @@ void Realtime::initializeGL() {
     glBindVertexArray(0);
 
     makeFBO();
+
+    // call sceneChanged
+    sceneChanged();
 }
 
 void Realtime::paintGL() {

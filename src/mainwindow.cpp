@@ -45,8 +45,6 @@ void MainWindow::initialize() {
     QLabel *far_label = new QLabel(); // Far plane label
     far_label->setText("Far Plane:");
 
-
-
     // Create checkbox for per-pixel filter
     filter1 = new QCheckBox();
     filter1->setText(QStringLiteral("Per-Pixel Filter"));
@@ -161,27 +159,27 @@ void MainWindow::initialize() {
     ec4->setText(QStringLiteral("Extra Credit 4"));
     ec4->setChecked(false);
 
-    vLayout->addWidget(uploadFile);
-    vLayout->addWidget(saveImage);
-    vLayout->addWidget(tesselation_label);
-    vLayout->addWidget(param1_label);
-    vLayout->addWidget(p1Layout);
-    vLayout->addWidget(param2_label);
-    vLayout->addWidget(p2Layout);
-    vLayout->addWidget(camera_label);
-    vLayout->addWidget(near_label);
-    vLayout->addWidget(nearLayout);
-    vLayout->addWidget(far_label);
-    vLayout->addWidget(farLayout);
-    vLayout->addWidget(filters_label);
-    vLayout->addWidget(filter1);
-    vLayout->addWidget(filter2);
+    // vLayout->addWidget(uploadFile);
+    // vLayout->addWidget(saveImage);
+    // vLayout->addWidget(tesselation_label);
+    // vLayout->addWidget(param1_label);
+    // vLayout->addWidget(p1Layout);
+    // vLayout->addWidget(param2_label);
+    // vLayout->addWidget(p2Layout);
+    // vLayout->addWidget(camera_label);
+    // vLayout->addWidget(near_label);
+    // vLayout->addWidget(nearLayout);
+    // vLayout->addWidget(far_label);
+    // vLayout->addWidget(farLayout);
+    // vLayout->addWidget(filters_label);
+    // vLayout->addWidget(filter1);
+    // vLayout->addWidget(filter2);
     // Extra Credit:
-    vLayout->addWidget(ec_label);
-    vLayout->addWidget(ec1);
-    vLayout->addWidget(ec2);
-    vLayout->addWidget(ec3);
-    vLayout->addWidget(ec4);
+    // vLayout->addWidget(ec_label);
+    // vLayout->addWidget(ec1);
+    // vLayout->addWidget(ec2);
+    // vLayout->addWidget(ec3);
+    // vLayout->addWidget(ec4);
 
     connectUIElements();
 
@@ -191,7 +189,7 @@ void MainWindow::initialize() {
 
     // Set default values for near and far planes
     onValChangeNearBox(0.1f);
-    onValChangeFarBox(10.f);
+    onValChangeFarBox(100.f);
 }
 
 void MainWindow::finish() {

@@ -4,11 +4,11 @@
 #include <string>
 
 struct Settings {
-    std::string sceneFilePath;
+    std::string sceneFilePath = "scenefiles/nighthawks/nighthawks.json";
     int shapeParameter1 = 1;
     int shapeParameter2 = 1;
-    float nearPlane = 1;
-    float farPlane = 1;
+    float nearPlane = 0.1f;
+    float farPlane = 100.f;
     bool perPixelFilter = false;
     bool kernelBasedFilter = false;
     bool extraCredit1 = false;
