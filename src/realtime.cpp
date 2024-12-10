@@ -159,6 +159,8 @@ void Realtime::paintGL() {
     // send light info
     for (int i = 0; i < numLights; i++) {
         SceneLightData light = lights[i];
+
+        // get all names set-up
         std::string baseName = "lights[" + std::to_string(i) + "]";
         GLuint typeLoc = glGetUniformLocation(m_shader, (baseName + ".type").c_str());
         GLuint colorLoc = glGetUniformLocation(m_shader, (baseName + ".color").c_str());
@@ -166,11 +168,13 @@ void Realtime::paintGL() {
         GLuint functionLoc = glGetUniformLocation(m_shader, (baseName + ".function").c_str());
         GLuint posLoc = glGetUniformLocation(m_shader, (baseName + ".pos").c_str());
 
+        // light color info is sent
         glUniform3f(colorLoc, light.color[0], light.color[1], light.color[2]);
         glUniform3f(dirLoc, light.dir[0], light.dir[1], light.dir[2]);
         glUniform3f(functionLoc, light.function[0], light.function[1], light.function[2]);
         glUniform3f(posLoc, light.pos[0], light.pos[1], light.pos[2]);
 
+        // type-related info is sent
         switch (light.type) {
         case LightType::LIGHT_POINT:
             glUniform1i(typeLoc, 0);
@@ -186,8 +190,8 @@ void Realtime::paintGL() {
             glUniform1f(angleLoc, light.angle);
             break;
         }
-
     }
+    // scene-wide info
     glUniform1i(glGetUniformLocation(m_shader, "numLights"), numLights);
     glUniform1f(glGetUniformLocation(m_shader, "k_a"), k_a);
     glUniform1f(glGetUniformLocation(m_shader, "k_d"), k_d);
@@ -195,7 +199,7 @@ void Realtime::paintGL() {
 
     GLuint modelLocation = glGetUniformLocation(m_shader, "model");
     for (Shape *shape : shapes) {
-        // Bind Sphere Vertex Data
+        // bind Sphere Vertex Data
         glBindVertexArray(*(shape->getVAO()));
 
         // pass in m_model as a uniform into the shader program
@@ -206,34 +210,32 @@ void Realtime::paintGL() {
         glUniform3f(glGetUniformLocation(m_shader, "cSpecular"), mat.cSpecular[0], mat.cSpecular[1], mat.cSpecular[2]);
         glUniform1f(glGetUniformLocation(m_shader, "shininess"), mat.shininess);
 
-        // Draw Command
+        // draw Command
         glDrawArrays(GL_TRIANGLES, 0, shape->generateShape().size() / 6);
     }
-
-
-    // Bind the default framebuffer
+    // Bind the default framebuffer, clear color/depth buffers
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-    // Clear the color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // bind our texture shader
     glUseProgram(m_texture_shader);
-    // Set your bool uniform on whether or not to filter the texture drawn
+
+    // set your bool uniform on whether or not to filter the texture drawn
     glUniform1f(glGetUniformLocation(m_texture_shader, "isInverting"), settings.perPixelFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "isSharpening"), settings.kernelBasedFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelW"), 1.f / m_fbo_width);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelH"), 1.f / m_fbo_height);
     glBindVertexArray(m_fullscreen_vao);
-    // Bind "texture" to slot 0
+
+    // bind "texture" to slot 0
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    // Unbind Vertex Array
+    // unbind Vertex Array
     glBindVertexArray(0);
     glUseProgram(0);
-
-
 }
 
 void Realtime::resizeGL(int w, int h) {
@@ -249,6 +251,9 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
+/**
+ * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
+ */
 void Realtime::sceneChanged() {
     RenderData data;
 
