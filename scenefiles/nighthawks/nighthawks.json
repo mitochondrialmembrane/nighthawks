@@ -29,52 +29,52 @@
             {
               "type": "mesh",
               "diffuse": [0, 0.2, 0.2],
-              "meshFile": "nighthawks_outside_wall.obj"
+              "meshFile": "nighthawks/nighthawks_outside_wall.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.8, 0.8, 0.5],
-              "meshFile": "nighthawks_inside_wall.obj"
+              "meshFile": "nighthawks/nighthawks_inside_wall.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.8, 0.8, 0.5],
-              "meshFile": "nighthawks_ceiling.obj"
+              "meshFile": "nighthawks/nighthawks_ceiling.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.35, 0.2, 0.1],
-              "meshFile": "nighthawks_chairs.obj"
+              "meshFile": "nighthawks/nighthawks_chairs.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.45, 0.18, 0.1],
-              "meshFile": "nighthawks_table.obj"
+              "meshFile": "nighthawks/nighthawks_table.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.75, 0.45, 0.15],
-              "meshFile": "nighthawks_door.obj"
+              "meshFile": "nighthawks/nighthawks_door.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.7, 0.5, 0.2],
-              "meshFile": "nighthawks_door_handle.obj"
+              "meshFile": "nighthawks/nighthawks_door_handle.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.35, 0.4, 0.34],
-              "meshFile": "nighthawks_floor.obj"
+              "meshFile": "nighthawks/nighthawks_floor.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.3, 0.15, 0.1],
-              "meshFile": "nighthawks_top.obj"
+              "meshFile": "nighthawks/nighthawks_top.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0.15, 0.07, 0.05],
-              "meshFile": "nighthawks_upper_building.obj"
+              "meshFile": "nighthawks/nighthawks_upper_building.obj"
             }
           ]
         }
