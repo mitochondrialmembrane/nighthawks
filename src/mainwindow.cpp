@@ -20,7 +20,7 @@ void MainWindow::initialize() {
     hLayout->addWidget(aspectRatioWidget, 1);
     this->setLayout(hLayout);
 
-    // Create labels in sidebox
+    // Create labels in sidebox (don't really need this but you live and you learn)
     QFont font;
     font.setPointSize(12);
     font.setBold(true);
