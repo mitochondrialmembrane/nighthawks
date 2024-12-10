@@ -11,10 +11,8 @@
 
 void MainWindow::initialize() {
     realtime = new Realtime;
-
     aspectRatioWidget = new AspectRatioWidget(this);
     aspectRatioWidget->setAspectWidget(realtime, 3.f/4.f);
-
     QHBoxLayout *hLayout = new QHBoxLayout; // horizontal alignment
     QVBoxLayout *vLayout = new QVBoxLayout(); // vertical alignment
     vLayout->setAlignment(Qt::AlignTop);
@@ -22,7 +20,7 @@ void MainWindow::initialize() {
     hLayout->addWidget(aspectRatioWidget, 1);
     this->setLayout(hLayout);
 
-    // Create labels in sidebox
+    // Create labels in sidebox (don't really need to be making these anymore but we live and we learn I guess)
     QFont font;
     font.setPointSize(12);
     font.setBold(true);
@@ -176,7 +174,6 @@ void MainWindow::initialize() {
     // vLayout->addWidget(filters_label);
     // vLayout->addWidget(filter1);
     // vLayout->addWidget(filter2);
-
     // Extra Credit:
     // vLayout->addWidget(ec_label);
     // vLayout->addWidget(ec1);
@@ -193,9 +190,6 @@ void MainWindow::initialize() {
     // Set default values for near and far planes
     onValChangeNearBox(0.1f);
     onValChangeFarBox(100.f);
-
-    // just call sceneCh
-    // realtime->sceneChanged();
 }
 
 void MainWindow::finish() {

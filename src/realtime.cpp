@@ -14,11 +14,12 @@
 #include "shapes/mesh.h"
 #include "utils/shaderloader.h"
 #include "utils/realtimeutils.h"
-#include <glm/glm.hpp>
-#include "glm/gtc/matrix_transform.hpp"
 
 // ================== Project 5: Lights, Camera
 
+/**
+ * @brief Realtime::Realtime constructor for the Realtime class
+ */
 Realtime::Realtime(QWidget *parent)
     : QOpenGLWidget(parent)
 {
@@ -34,17 +35,22 @@ Realtime::Realtime(QWidget *parent)
     m_keyMap[Qt::Key_Space]   = false;
 }
 
+/**
+ * @brief Realtime::finish called upon program close --- frees all allocated memory
+ */
 void Realtime::finish() {
     killTimer(m_timer);
     this->makeCurrent();
 
-    // Students: anything requiring OpenGL calls when the program exits should be done here
+    // clear all VAOs, VBOs for shapes in our scene
     RealtimeUtils::clearArrays(shapes, this);
 
+    // delete all allocated memory
     for (Shape *shape : shapes) {
         delete shape;
     }
 
+    // delete shaders, additional VAOs, FBO
     glDeleteProgram(m_shader);
     glDeleteProgram(m_texture_shader);
     glDeleteVertexArrays(1, &m_fullscreen_vao);
@@ -56,19 +62,27 @@ void Realtime::finish() {
     this->doneCurrent();
 }
 
+/**
+ * @brief Realtime::initializeGL handles initialization and calls function that loads our scene
+ */
 void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
 
+    // set background color
+    glClearColor(0.031, 0.122, 0.114, 1.0f);
+
+    // start timer
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
+
+    // set-up our FBO
     m_defaultFBO = 2;
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
     m_fbo_width = m_screen_width;
     m_fbo_height = m_screen_height;
 
-    // Initializing GL.
-    // GLEW (GL Extension Wrangler) provides access to OpenGL functions.
+    // Initializing GL : GLEW (GL Extension Wrangler) provides access to OpenGL functions.
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK) {
@@ -76,17 +90,16 @@ void Realtime::initializeGL() {
     }
     std::cout << "Initialized GL: Version " << glewGetString(GLEW_VERSION) << std::endl;
 
-    // Allows OpenGL to draw objects appropriately on top of one another
+    // draw objects appropriately on top of one another, cull faces non-visible faces, set dimensions
     glEnable(GL_DEPTH_TEST);
-    // Tells OpenGL to only draw the front face
     glEnable(GL_CULL_FACE);
-    // Tells OpenGL how big the screen is
     glViewport(0, 0, m_screen_width, m_screen_height);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // load our shaders
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
 
+    // set up some texture-related stuff
     glUseProgram(m_texture_shader);
     glUniform1f(glGetUniformLocation(m_texture_shader, "tex"), 0);
     glUseProgram(0);
@@ -100,7 +113,7 @@ void Realtime::initializeGL() {
             1.f, -1.f, 0.0f, 1, 0
         };
 
-    // Generate and bind a VBO and a VAO for a fullscreen quad
+    // generate and bind a VBO and a VAO for a fullscreen quad
     glGenBuffers(1, &m_fullscreen_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
     glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
@@ -112,28 +125,33 @@ void Realtime::initializeGL() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 
-    // Unbind the fullscreen quad's VBO and VAO
+    // unbind the fullscreen quad's VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // call makeFBO
     makeFBO();
 
-    // generate the scene
-    generateScene();
+    // call sceneChanged to actually parse our scene
+    sceneChanged();
 }
 
+/**
+ * @brief Realtime::paintGL called whenever openGL state changes --- actually creates visuals
+ */
 void Realtime::paintGL() {
-    // Clear screen color and depth before painting
+    // clear screen color and depth before painting
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // activate the shader program
+    // bind our main (phong) shader
     glUseProgram(m_shader);
 
+    // bind our frame buffer and do some basic setup
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glViewport(0, 0, m_fbo_width, m_fbo_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // camera info
+    // send camera info to the shader
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "view"), 1, GL_FALSE, &(camera.getViewMatrix())[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "proj"), 1, GL_FALSE, &(camera.getProjMatrix())[0][0]);
     glUniform4fv(glGetUniformLocation(m_shader, "camPos"), 1, &(camera.getCamPos())[0]);
@@ -141,6 +159,8 @@ void Realtime::paintGL() {
     // send light info
     for (int i = 0; i < numLights; i++) {
         SceneLightData light = lights[i];
+
+        // get all names set-up
         std::string baseName = "lights[" + std::to_string(i) + "]";
         GLuint typeLoc = glGetUniformLocation(m_shader, (baseName + ".type").c_str());
         GLuint colorLoc = glGetUniformLocation(m_shader, (baseName + ".color").c_str());
@@ -148,11 +168,13 @@ void Realtime::paintGL() {
         GLuint functionLoc = glGetUniformLocation(m_shader, (baseName + ".function").c_str());
         GLuint posLoc = glGetUniformLocation(m_shader, (baseName + ".pos").c_str());
 
+        // light color info is sent
         glUniform3f(colorLoc, light.color[0], light.color[1], light.color[2]);
         glUniform3f(dirLoc, light.dir[0], light.dir[1], light.dir[2]);
         glUniform3f(functionLoc, light.function[0], light.function[1], light.function[2]);
         glUniform3f(posLoc, light.pos[0], light.pos[1], light.pos[2]);
 
+        // type-related info is sent
         switch (light.type) {
         case LightType::LIGHT_POINT:
             glUniform1i(typeLoc, 0);
@@ -168,8 +190,8 @@ void Realtime::paintGL() {
             glUniform1f(angleLoc, light.angle);
             break;
         }
-
     }
+    // scene-wide info
     glUniform1i(glGetUniformLocation(m_shader, "numLights"), numLights);
     glUniform1f(glGetUniformLocation(m_shader, "k_a"), k_a);
     glUniform1f(glGetUniformLocation(m_shader, "k_d"), k_d);
@@ -177,7 +199,7 @@ void Realtime::paintGL() {
 
     GLuint modelLocation = glGetUniformLocation(m_shader, "model");
     for (Shape *shape : shapes) {
-        // Bind Sphere Vertex Data
+        // bind Sphere Vertex Data
         glBindVertexArray(*(shape->getVAO()));
 
         // pass in m_model as a uniform into the shader program
@@ -188,41 +210,39 @@ void Realtime::paintGL() {
         glUniform3f(glGetUniformLocation(m_shader, "cSpecular"), mat.cSpecular[0], mat.cSpecular[1], mat.cSpecular[2]);
         glUniform1f(glGetUniformLocation(m_shader, "shininess"), mat.shininess);
 
-        // Draw Command
+        // draw Command
         glDrawArrays(GL_TRIANGLES, 0, shape->generateShape().size() / 6);
     }
-
-
-    // Bind the default framebuffer
+    // Bind the default framebuffer, clear color/depth buffers
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-    // Clear the color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // bind our texture shader
     glUseProgram(m_texture_shader);
-    // Set your bool uniform on whether or not to filter the texture drawn
+
+    // set your bool uniform on whether or not to filter the texture drawn
     glUniform1f(glGetUniformLocation(m_texture_shader, "isInverting"), settings.perPixelFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "isSharpening"), settings.kernelBasedFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelW"), 1.f / m_fbo_width);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelH"), 1.f / m_fbo_height);
     glBindVertexArray(m_fullscreen_vao);
-    // Bind "texture" to slot 0
+
+    // bind "texture" to slot 0
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    // Unbind Vertex Array
+    // unbind Vertex Array
     glBindVertexArray(0);
     glUseProgram(0);
-
-
 }
 
 void Realtime::resizeGL(int w, int h) {
-    // Tells OpenGL how big the screen is
+    // tells OpenGL how big the screen is
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // students: anything requiring OpenGL calls when the program starts should be done here
     camera.updateWidthHeight(w, h);
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
@@ -231,232 +251,9 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
-/* PROCEDURAL GENERATION START */
-void Realtime::generateCity(WFCGrid &grid) {
-    const float tileSize = 2.f;
-
-    std::cout << "grid height: " << grid.height << std::endl;
-    std::cout << "grid width: " << grid.width << std::endl;
-
-    // Define the protected area in terms of grid coordinates
-    const int protectedXStart = -5;        // Start X (e.g., 25% into the grid)
-    const int protectedXEnd = 5;     // End X (e.g., 75% into the grid)
-    const int protectedYStart = -5;      // Start Y
-    const int protectedYEnd = 5;    // End Y
-
-    for (int y = 0; y < grid.height; y++) {
-        for (int x = 0; x < grid.width; x++) {
-
-            // Skip tiles within the protected area
-            if (x - 10 >= protectedXStart && x - 10 < protectedXEnd &&
-                y - 10 >= protectedYStart && y - 10 < protectedYEnd) {
-                continue;
-            }
-
-            Tile& tile = grid.grid[y][x];
-            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 10, 0.f, y * tileSize - 10));
-
-            SceneMaterial mat;
-            mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f); // Example: Non-green color
-            mat.cAmbient = glm::vec4(0.2f, 0.1f, 0.05f, 1.f);
-            mat.cSpecular = glm::vec4(1.0f);
-            mat.shininess = 16.0f;
-            SceneMaterial roofMat;
-            roofMat = mat;
-            roofMat.cDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.f); // Example: Non-green color
-            roofMat.cAmbient = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
-            roofMat.cSpecular = glm::vec4(1.0f);
-            roofMat.shininess = 5.f;
-
-            glm::mat4 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 1.f, 0.f));
-            SceneMaterial doorMat;
-            glm::mat4 doorMatrix;
-
-            switch (tile.type) {
-            case SMALL_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
-                float height = 2.f + rand() % 2;
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, height, 1.f));
-                shapes.push_back(new Cube(modelMatrix, mat));
-                break;
-            }
-            case MEDIUM_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
-                float height = 4.f + rand() % 2;
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(1.5f, height, 1.5f));
-                shapes.push_back(new Cube(modelMatrix, mat));
-                break;
-            }
-            case TALL_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.2, 0.2, 0.4, 1.0); // Glass color
-                float height = 8.f + rand() % 3;
-
-                // Align building bottom
-                glm::mat4 baseMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f));
-                glm::mat4 scaledMatrix = glm::scale(baseMatrix, glm::vec3(2.f, height, 2.f));
-                shapes.push_back(new Cube(scaledMatrix, mat));
-
-                // Add antennae
-                roofMat = mat;
-                roofMat.cDiffuse = glm::vec4(0.7, 0.7, 0.7, 1.0); // Metal
-
-                // Use baseMatrix (unscaled) to position antennae on top
-                glm::mat4 antennaBaseMatrix = glm::translate(baseMatrix, glm::vec3(0.f, height / 2.f, 0.f));
-
-                glm::mat4 antennaMatrix1 = glm::translate(antennaBaseMatrix, glm::vec3(-0.3f, 1.f, -0.3f));
-                antennaMatrix1 = glm::scale(antennaMatrix1, glm::vec3(0.25f, 2.f, 0.25f));
-                shapes.push_back(new Cylinder(antennaMatrix1, roofMat));
-
-                glm::mat4 antennaMatrix2 = glm::translate(antennaBaseMatrix, glm::vec3(0.4f, 1.f, 0.4f));
-                antennaMatrix2 = glm::scale(antennaMatrix2, glm::vec3(0.25f, 1.5f, 0.25f));
-                shapes.push_back(new Cylinder(antennaMatrix2, roofMat));
-
-                // Example: Adding a Door
-                doorMatrix = glm::translate(baseMatrix, glm::vec3(0.f, 0.0f, 1.f)); // Centered on the front face
-                doorMatrix = glm::scale(doorMatrix, glm::vec3(0.5f, 0.4f, 0.1f)); // Thin and tall door
-                doorMat.cDiffuse = glm::vec4(1.f, 1.f, 1.f, 1.0); // Wood color
-                shapes.push_back(new Cube(doorMatrix, mat));
-                break;
-            }
-            }
-        }
-    }
-
-
-
-//     for (int y = 0; y < grid.height; y++) {
-//         for (int x = 0; x < grid.width; x++) {
-
-//             // Skip tiles within the protected area
-//             if (x - 10 >= protectedXStart && x - 10 < protectedXEnd &&
-//                 y - 10 >= protectedYStart && y - 10 < protectedYEnd) {
-//                 continue;
-//             }
-
-//             Tile& tile = grid.grid[y][x];
-//             glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 10, 0.f, y * tileSize - 10));
-
-//             SceneMaterial mat;
-//             mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f); // Example: Non-green color
-//             mat.cAmbient = glm::vec4(0.2f, 0.1f, 0.05f, 1.f);
-//             mat.cSpecular = glm::vec4(1.0f);
-//             mat.shininess = 16.0f;
-//             SceneMaterial roofMat;
-//             glm::mat4 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 1.f, 0.f));
-//             SceneMaterial doorMat;
-//             glm::mat4 doorMatrix;
-
-//             switch (tile.type) {
-//             case SMALL_BUILDING:
-//                 mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
-//                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 2.f + rand() % 2, 1.f));
-//                 shapes.push_back(new Cube(modelMatrix, mat));
-
-//                 // Example: Adding a Door
-//                 doorMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.0f, 1.f)); // Centered on the front face
-//                 doorMatrix = glm::scale(doorMatrix, glm::vec3(0.5f, 0.4f, 0.1f)); // Thin and tall door
-//                 // doorMat.cDiffuse = glm::vec4(0.4, 0.2, 0.1, 1.0); // Wood color
-//                 // shapes.push_back(new Cube(doorMatrix, mat));
-//                 break;
-//             case MEDIUM_BUILDING:
-//                 mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
-//                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1.5f, 4.f + rand() % 2, 1.5f));
-//                 shapes.push_back(new Cube(modelMatrix, mat));
-//                 break;
-//             case TALL_BUILDING:
-//                 mat.cDiffuse = glm::vec4(0.2, 0.2, 0.4, 1.0); // Glass color
-//                 modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 8.f + rand() % 3, 2.f));
-//                 shapes.push_back(new Cube(modelMatrix, mat));
-
-//                 // Add antennae for tall buildings
-//                 roofMat = mat;
-//                 roofMat.cDiffuse = glm::vec4(0.7, 0.7, 0.7, 1.0); // metal
-//                 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, 0.5f, 0.f));
-//                 roofMatrix = glm::scale(roofMatrix, glm::vec3(0.1f, 0.3f, 0.1f));
-//                 shapes.push_back(new Cylinder(roofMatrix, roofMat));
-
-//                 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, 0.5f, 0.3f));
-//                 roofMatrix = glm::scale(roofMatrix, glm::vec3(0.1f, 0.4f, 0.1f));
-//                 shapes.push_back(new Cylinder(roofMatrix, roofMat));
-//                 break;
-//             default:
-//                 break;
-//             }
-
-
-        // }
-    // }
-}
-
-/* PROCEDURAL GENERATION END */
-
 /**
- * @brief Realtime::generateScene
- * bro idk
+ * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
  */
-void Realtime::generateScene() {
-    RenderData data;
-
-    // clean up old shape array
-    SceneParser::parse(settings.sceneFilePath, data);
-    RealtimeUtils::clearArrays(shapes, this);
-    for (Shape *shape : shapes) {
-        delete shape;
-    }
-
-    shapes.clear();
-    shapes.resize(data.shapes.size());
-
-    camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
-    // bezier = Bezier();
-
-    /* PROCEDURAL GENERATION START */
-    WFCGrid grid(20, 20); // 10 x 10 grid
-    while (!grid.isFullyCollapsed()) {
-        grid.collapse();
-    }
-
-    generateCity(grid);
-    /* PROCEDURAL GENERATION END */
-
-    // process shape data
-    for (int i = 0; i < data.shapes.size(); i++) {
-        RenderShapeData shape = data.shapes[i];
-
-        switch (shape.primitive.type) {
-        case PrimitiveType::PRIMITIVE_CUBE:
-            shapes[i] = new Cube(shape.ctm, shape.primitive.material);
-            break;
-        case PrimitiveType::PRIMITIVE_CONE:
-            shapes[i] = new Cone(shape.ctm, shape.primitive.material);
-            break;
-        case PrimitiveType::PRIMITIVE_CYLINDER:
-            shapes[i] = new Cylinder(shape.ctm, shape.primitive.material);
-            break;
-        case PrimitiveType::PRIMITIVE_SPHERE:
-            shapes[i] = new Sphere(shape.ctm, shape.primitive.material);
-            break;
-        case PrimitiveType::PRIMITIVE_MESH:
-            shapes[i] = new Mesh(shape.ctm, shape.primitive.material, shape.primitive.meshfile);
-            break;
-        }
-    }
-    // process light data
-    numLights = fmin(data.lights.size(), 8);
-    for (int i = 0; i < numLights; i++) {
-        lights[i] = data.lights[i];
-    }
-    // set global constants
-    k_a = data.globalData.ka;
-    k_s = data.globalData.ks;
-    k_d = data.globalData.kd;
-
-    RealtimeUtils::buildArrays(shapes, this, settings.shapeParameter1, settings.shapeParameter2);
-    update(); // asks for a PaintGL() call to occur
-}
-
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -466,21 +263,12 @@ void Realtime::sceneChanged() {
     for (Shape *shape : shapes) {
         delete shape;
     }
-
     shapes.clear();
     shapes.resize(data.shapes.size());
 
+    // setup camera and bezier curve
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
-    // bezier = Bezier();
-
-    /* PROCEDURAL GENERATION START */
-    WFCGrid grid(20, 20); // 10 x 10 grid
-    while (!grid.isFullyCollapsed()) {
-        grid.collapse();
-    }
-
-    generateCity(grid);
-    /* PROCEDURAL GENERATION END */
+    bezier = Bezier();
 
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
@@ -504,11 +292,13 @@ void Realtime::sceneChanged() {
                 break;
         }
     }
+
     // process light data
     numLights = fmin(data.lights.size(), 8);
     for (int i = 0; i < numLights; i++) {
         lights[i] = data.lights[i];
     }
+
     // set global constants
     k_a = data.globalData.ka;
     k_s = data.globalData.ks;
@@ -518,6 +308,9 @@ void Realtime::sceneChanged() {
     update(); // asks for a PaintGL() call to occur
 }
 
+/**
+ * @brief Realtime::settingsChanged called when settings change. should happen minimally in nighthawks
+ */
 void Realtime::settingsChanged() {
     // updates camera and shape arrays accordingly
     camera.updateClippingPlanes(settings.nearPlane, settings.farPlane);
@@ -528,14 +321,23 @@ void Realtime::settingsChanged() {
 
 // ================== Project 6: Action!
 
+/**
+ * @brief Realtime::keyPressEvent deals with a key-press event
+ */
 void Realtime::keyPressEvent(QKeyEvent *event) {
     m_keyMap[Qt::Key(event->key())] = true;
 }
 
+/**
+ * @brief Realtime::keyReleaseEvent  deals with a key-release event
+ */
 void Realtime::keyReleaseEvent(QKeyEvent *event) {
     m_keyMap[Qt::Key(event->key())] = false;
 }
 
+/**
+ * @brief Realtime::mousePressEvent deals with a mouse-pressing event
+ */
 void Realtime::mousePressEvent(QMouseEvent *event) {
     if (event->buttons().testFlag(Qt::LeftButton)) {
         m_mouseDown = true;
@@ -543,12 +345,18 @@ void Realtime::mousePressEvent(QMouseEvent *event) {
     }
 }
 
+/**
+ * @brief Realtime::mouseReleaseEvent deals with a mouse-releasing event
+ */
 void Realtime::mouseReleaseEvent(QMouseEvent *event) {
     if (!event->buttons().testFlag(Qt::LeftButton)) {
         m_mouseDown = false;
     }
 }
 
+/**
+ * @brief Realtime::mouseMoveEvent deals with a mouse-moving event
+ */
 void Realtime::mouseMoveEvent(QMouseEvent *event) {
     if (m_mouseDown) {
         int posX = event->position().x();
@@ -566,12 +374,15 @@ void Realtime::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
+/**
+ * @brief Realtime::timerEvent deals with a timer event
+ */
 void Realtime::timerEvent(QTimerEvent *event) {
     int elapsedms   = m_elapsedTimer.elapsed();
     float deltaTime = elapsedms * 0.001f;
     m_elapsedTimer.restart();
 
-    // Use deltaTime and m_keyMap here to move around
+    // use deltaTime and m_keyMap here to move around
     glm::mat4 ctm = camera.getViewMatrixInverted();
 
     // get forward and right vectors
@@ -587,15 +398,18 @@ void Realtime::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Space]) camera.translate(glm::vec3(0, delta, 0));
     if (m_keyMap[Qt::Key_Control]) camera.translate(glm::vec3(0, -delta, 0));
 
-    // glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
-    // camera.translate(bezierTranslate);
+    glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
+    camera.translate(bezierTranslate);
 
     update(); // asks for a PaintGL() call to occur
 }
 
+/**
+ * @brief Realtime::makeFBO creates an FBO given everything previously set up
+ */
 void Realtime::makeFBO(){
     this->makeCurrent();
-    // Generate and bind an empty texture, set its min/mag filter interpolation, then unbind
+    // generate and bind an empty texture, set its min/mag filter interpolation, then unbind
     glGenTextures(1, &m_fbo_texture);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
@@ -604,22 +418,27 @@ void Realtime::makeFBO(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    // Generate and bind a renderbuffer of the right size, set its format, then unbind
+    // generate and bind a renderbuffer of the right size, set its format, then unbind
     glGenRenderbuffers(1, &m_fbo_renderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_fbo_renderbuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_fbo_width, m_fbo_height);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    // Generate and bind an FBO
+
+    // generate and bind an FBO
     glGenFramebuffers(1, &m_fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-    // Add our texture as a color attachment, and our renderbuffer as a depth+stencil attachment, to our FBO
+
+    // add our texture as a color attachment, and our renderbuffer as a depth+stencil attachment, to our FBO
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_fbo_texture, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_fbo_renderbuffer);
-    // Unbind the FBO
+
+    // unbind the FBO
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
 }
 
-// DO NOT EDIT
+/**
+ * @brief Realtime::saveViewportImage DO NOT EDIT: given function
+ */
 void Realtime::saveViewportImage(std::string filePath) {
     // Make sure we have the right context and everything has been drawn
     makeCurrent();
