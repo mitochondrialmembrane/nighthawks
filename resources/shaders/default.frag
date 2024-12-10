@@ -37,6 +37,7 @@ void main() {
 
     vec3 lightDir;
     float atten;
+
     for (int i = 0; i < numLights; i++) {
         Light light = lights[i];
 
@@ -81,5 +82,4 @@ void main() {
             color[j] += (diffuse * cDiffuse[j] + specular * cSpecular[j]) * light.color[j] * atten;
         }
     }
-
 }
