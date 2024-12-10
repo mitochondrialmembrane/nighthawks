@@ -50,6 +50,7 @@ add_executable(${PROJECT_NAME}
     src/utils/realtimeutils.h src/utils/realtimeutils.cpp
     src/shapes/mesh.h src/shapes/mesh.cpp
     src/utils/bezier.h src/utils/bezier.cpp
+    src/utils/pg.h
 
 )
 

@@ -16,6 +16,8 @@
 #include "shapes/shape.h"
 #include "utils/camera.h"
 #include "utils/bezier.h"
+#include "utils/pg.h"
+
 
 class Realtime : public QOpenGLWidget
 {
@@ -77,4 +79,7 @@ private:
     GLuint m_texture_shader;
     GLuint m_fullscreen_vbo;
     GLuint m_fullscreen_vao;
+
+    void generateCity(WFCGrid &grid);
+
 };
