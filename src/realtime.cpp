@@ -239,10 +239,10 @@ void Realtime::paintGL() {
 }
 
 void Realtime::resizeGL(int w, int h) {
-    // Tells OpenGL how big the screen is
+    // tells OpenGL how big the screen is
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // students: anything requiring OpenGL calls when the program starts should be done here
     camera.updateWidthHeight(w, h);
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
@@ -263,12 +263,13 @@ void Realtime::sceneChanged() {
     for (Shape *shape : shapes) {
         delete shape;
     }
-
     shapes.clear();
     shapes.resize(data.shapes.size());
 
+    // setup camera and bezier curve
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
+
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
@@ -291,11 +292,13 @@ void Realtime::sceneChanged() {
                 break;
         }
     }
+
     // process light data
     numLights = fmin(data.lights.size(), 8);
     for (int i = 0; i < numLights; i++) {
         lights[i] = data.lights[i];
     }
+
     // set global constants
     k_a = data.globalData.ka;
     k_s = data.globalData.ks;
@@ -305,6 +308,9 @@ void Realtime::sceneChanged() {
     update(); // asks for a PaintGL() call to occur
 }
 
+/**
+ * @brief Realtime::settingsChanged called when settings change. should happen minimally in nighthawks
+ */
 void Realtime::settingsChanged() {
     // updates camera and shape arrays accordingly
     camera.updateClippingPlanes(settings.nearPlane, settings.farPlane);
