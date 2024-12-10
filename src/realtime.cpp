@@ -62,19 +62,24 @@ void Realtime::finish() {
     this->doneCurrent();
 }
 
+/**
+ * @brief Realtime::initializeGL handles initialization and calls function that loads our scene
+ */
 void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
 
+    // start timer
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
+
+    // set-up our FBO
     m_defaultFBO = 2;
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
     m_fbo_width = m_screen_width;
     m_fbo_height = m_screen_height;
 
-    // Initializing GL.
-    // GLEW (GL Extension Wrangler) provides access to OpenGL functions.
+    // Initializing GL : GLEW (GL Extension Wrangler) provides access to OpenGL functions.
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK) {
@@ -82,17 +87,16 @@ void Realtime::initializeGL() {
     }
     std::cout << "Initialized GL: Version " << glewGetString(GLEW_VERSION) << std::endl;
 
-    // Allows OpenGL to draw objects appropriately on top of one another
+    // draw objects appropriately on top of one another, cull faces non-visible faces, set dimensions
     glEnable(GL_DEPTH_TEST);
-    // Tells OpenGL to only draw the front face
     glEnable(GL_CULL_FACE);
-    // Tells OpenGL how big the screen is
     glViewport(0, 0, m_screen_width, m_screen_height);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // load our shaders
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
 
+    // set up some texture-related stuff
     glUseProgram(m_texture_shader);
     glUniform1f(glGetUniformLocation(m_texture_shader, "tex"), 0);
     glUseProgram(0);
@@ -106,7 +110,7 @@ void Realtime::initializeGL() {
             1.f, -1.f, 0.0f, 1, 0
         };
 
-    // Generate and bind a VBO and a VAO for a fullscreen quad
+    // generate and bind a VBO and a VAO for a fullscreen quad
     glGenBuffers(1, &m_fullscreen_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
     glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
@@ -118,13 +122,14 @@ void Realtime::initializeGL() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 
-    // Unbind the fullscreen quad's VBO and VAO
+    // unbind the fullscreen quad's VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // call makeFBO
     makeFBO();
 
-    // call sceneChanged
+    // call sceneChanged to actually parse our scene
     sceneChanged();
 }
 
