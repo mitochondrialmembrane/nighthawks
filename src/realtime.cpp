@@ -17,6 +17,9 @@
 
 // ================== Project 5: Lights, Camera
 
+/**
+ * @brief Realtime::Realtime constructor for the Realtime class
+ */
 Realtime::Realtime(QWidget *parent)
     : QOpenGLWidget(parent)
 {
@@ -30,21 +33,24 @@ Realtime::Realtime(QWidget *parent)
     m_keyMap[Qt::Key_D]       = false;
     m_keyMap[Qt::Key_Control] = false;
     m_keyMap[Qt::Key_Space]   = false;
-
-    // If you must use this function, do not edit anything above this
 }
 
+/**
+ * @brief Realtime::finish called upon program close --- frees all allocated memory
+ */
 void Realtime::finish() {
     killTimer(m_timer);
     this->makeCurrent();
 
-    // Students: anything requiring OpenGL calls when the program exits should be done here
+    // clear all VAOs, VBOs for shapes in our scene
     RealtimeUtils::clearArrays(shapes, this);
 
+    // delete all allocated memory
     for (Shape *shape : shapes) {
         delete shape;
     }
 
+    // delete shaders, additional VAOs, FBO
     glDeleteProgram(m_shader);
     glDeleteProgram(m_texture_shader);
     glDeleteVertexArrays(1, &m_fullscreen_vao);
