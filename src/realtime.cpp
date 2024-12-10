@@ -409,7 +409,7 @@ void Realtime::sceneChanged() {
     shapes.resize(data.shapes.size());
 
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
-    // bezier = Bezier();
+    bezier = Bezier();
 
     /* PROCEDURAL GENERATION START */
     WFCGrid grid(20, 20); // 10 x 10 grid
@@ -525,8 +525,8 @@ void Realtime::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Space]) camera.translate(glm::vec3(0, delta, 0));
     if (m_keyMap[Qt::Key_Control]) camera.translate(glm::vec3(0, -delta, 0));
 
-    // glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
-    // camera.translate(bezierTranslate);
+    glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
+    camera.translate(bezierTranslate);
 
     update(); // asks for a PaintGL() call to occur
 }
