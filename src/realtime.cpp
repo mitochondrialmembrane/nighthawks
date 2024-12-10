@@ -20,6 +20,9 @@
 
 // ================== Project 5: Lights, Camera
 
+/**
+ * @brief Realtime::Realtime constructor for the Realtime class
+ */
 Realtime::Realtime(QWidget *parent)
     : QOpenGLWidget(parent)
 {
@@ -33,21 +36,24 @@ Realtime::Realtime(QWidget *parent)
     m_keyMap[Qt::Key_D]       = false;
     m_keyMap[Qt::Key_Control] = false;
     m_keyMap[Qt::Key_Space]   = false;
-
-    // If you must use this function, do not edit anything above this
 }
 
+/**
+ * @brief Realtime::finish called upon program close --- frees all allocated memory
+ */
 void Realtime::finish() {
     killTimer(m_timer);
     this->makeCurrent();
 
-    // Students: anything requiring OpenGL calls when the program exits should be done here
+    // clear all VAOs, VBOs for shapes in our scene
     RealtimeUtils::clearArrays(shapes, this);
 
+    // delete all allocated memory
     for (Shape *shape : shapes) {
         delete shape;
     }
 
+    // delete shaders, additional VAOs, FBO
     glDeleteProgram(m_shader);
     glDeleteProgram(m_texture_shader);
     glDeleteVertexArrays(1, &m_fullscreen_vao);
@@ -59,19 +65,27 @@ void Realtime::finish() {
     this->doneCurrent();
 }
 
+/**
+ * @brief Realtime::initializeGL handles initialization and calls function that loads our scene
+ */
 void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
 
+    // set background color
+    glClearColor(0.031, 0.122, 0.114, 1.0f);
+
+    // start timer
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
+
+    // set-up our FBO
     m_defaultFBO = 2;
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
     m_fbo_width = m_screen_width;
     m_fbo_height = m_screen_height;
 
-    // Initializing GL.
-    // GLEW (GL Extension Wrangler) provides access to OpenGL functions.
+    // Initializing GL : GLEW (GL Extension Wrangler) provides access to OpenGL functions.
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (err != GLEW_OK) {
@@ -79,17 +93,16 @@ void Realtime::initializeGL() {
     }
     std::cout << "Initialized GL: Version " << glewGetString(GLEW_VERSION) << std::endl;
 
-    // Allows OpenGL to draw objects appropriately on top of one another
+    // draw objects appropriately on top of one another, cull faces non-visible faces, set dimensions
     glEnable(GL_DEPTH_TEST);
-    // Tells OpenGL to only draw the front face
     glEnable(GL_CULL_FACE);
-    // Tells OpenGL how big the screen is
     glViewport(0, 0, m_screen_width, m_screen_height);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // load our shaders
     m_shader = ShaderLoader::createShaderProgram(":/resources/shaders/default.vert", ":/resources/shaders/default.frag");
     m_texture_shader = ShaderLoader::createShaderProgram(":/resources/shaders/texture.vert", ":/resources/shaders/texture.frag");
 
+    // set up some texture-related stuff
     glUseProgram(m_texture_shader);
     glUniform1f(glGetUniformLocation(m_texture_shader, "tex"), 0);
     glUseProgram(0);
@@ -103,7 +116,7 @@ void Realtime::initializeGL() {
             1.f, -1.f, 0.0f, 1, 0
         };
 
-    // Generate and bind a VBO and a VAO for a fullscreen quad
+    // generate and bind a VBO and a VAO for a fullscreen quad
     glGenBuffers(1, &m_fullscreen_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_fullscreen_vbo);
     glBufferData(GL_ARRAY_BUFFER, fullscreen_quad_data.size()*sizeof(GLfloat), fullscreen_quad_data.data(), GL_STATIC_DRAW);
@@ -115,29 +128,33 @@ void Realtime::initializeGL() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
 
-    // Unbind the fullscreen quad's VBO and VAO
+    // unbind the fullscreen quad's VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    // call makeFBO
     makeFBO();
 
-    // call sceneChanged
+    // call sceneChanged to actually parse our scene
     sceneChanged();
 }
 
+/**
+ * @brief Realtime::paintGL called whenever openGL state changes --- actually creates visuals
+ */
 void Realtime::paintGL() {
-    // Students: anything requiring OpenGL calls every frame should be done here
-    // Clear screen color and depth before painting
+    // clear screen color and depth before painting
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // activate the shader program
+    // bind our main (phong) shader
     glUseProgram(m_shader);
 
+    // bind our frame buffer and do some basic setup
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glViewport(0, 0, m_fbo_width, m_fbo_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // camera info
+    // send camera info to the shader
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "view"), 1, GL_FALSE, &(camera.getViewMatrix())[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "proj"), 1, GL_FALSE, &(camera.getProjMatrix())[0][0]);
     glUniform4fv(glGetUniformLocation(m_shader, "camPos"), 1, &(camera.getCamPos())[0]);
@@ -145,6 +162,8 @@ void Realtime::paintGL() {
     // send light info
     for (int i = 0; i < numLights; i++) {
         SceneLightData light = lights[i];
+
+        // get all names set-up
         std::string baseName = "lights[" + std::to_string(i) + "]";
         GLuint typeLoc = glGetUniformLocation(m_shader, (baseName + ".type").c_str());
         GLuint colorLoc = glGetUniformLocation(m_shader, (baseName + ".color").c_str());
@@ -152,11 +171,13 @@ void Realtime::paintGL() {
         GLuint functionLoc = glGetUniformLocation(m_shader, (baseName + ".function").c_str());
         GLuint posLoc = glGetUniformLocation(m_shader, (baseName + ".pos").c_str());
 
+        // light color info is sent
         glUniform3f(colorLoc, light.color[0], light.color[1], light.color[2]);
         glUniform3f(dirLoc, light.dir[0], light.dir[1], light.dir[2]);
         glUniform3f(functionLoc, light.function[0], light.function[1], light.function[2]);
         glUniform3f(posLoc, light.pos[0], light.pos[1], light.pos[2]);
 
+        // type-related info is sent
         switch (light.type) {
         case LightType::LIGHT_POINT:
             glUniform1i(typeLoc, 0);
@@ -172,8 +193,8 @@ void Realtime::paintGL() {
             glUniform1f(angleLoc, light.angle);
             break;
         }
-
     }
+    // scene-wide info
     glUniform1i(glGetUniformLocation(m_shader, "numLights"), numLights);
     glUniform1f(glGetUniformLocation(m_shader, "k_a"), k_a);
     glUniform1f(glGetUniformLocation(m_shader, "k_d"), k_d);
@@ -181,7 +202,7 @@ void Realtime::paintGL() {
 
     GLuint modelLocation = glGetUniformLocation(m_shader, "model");
     for (Shape *shape : shapes) {
-        // Bind Sphere Vertex Data
+        // bind Sphere Vertex Data
         glBindVertexArray(*(shape->getVAO()));
 
         // pass in m_model as a uniform into the shader program
@@ -192,41 +213,39 @@ void Realtime::paintGL() {
         glUniform3f(glGetUniformLocation(m_shader, "cSpecular"), mat.cSpecular[0], mat.cSpecular[1], mat.cSpecular[2]);
         glUniform1f(glGetUniformLocation(m_shader, "shininess"), mat.shininess);
 
-        // Draw Command
+        // draw Command
         glDrawArrays(GL_TRIANGLES, 0, shape->generateShape().size() / 6);
     }
-
-
-    // Bind the default framebuffer
+    // Bind the default framebuffer, clear color/depth buffers
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBO);
-    // Clear the color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // bind our texture shader
     glUseProgram(m_texture_shader);
-    // Set your bool uniform on whether or not to filter the texture drawn
+
+    // set your bool uniform on whether or not to filter the texture drawn
     glUniform1f(glGetUniformLocation(m_texture_shader, "isInverting"), settings.perPixelFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "isSharpening"), settings.kernelBasedFilter);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelW"), 1.f / m_fbo_width);
     glUniform1f(glGetUniformLocation(m_texture_shader, "pixelH"), 1.f / m_fbo_height);
     glBindVertexArray(m_fullscreen_vao);
-    // Bind "texture" to slot 0
+
+    // bind "texture" to slot 0
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_fbo_texture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    // Unbind Vertex Array
+    // unbind Vertex Array
     glBindVertexArray(0);
     glUseProgram(0);
-
-
 }
 
 void Realtime::resizeGL(int w, int h) {
-    // Tells OpenGL how big the screen is
+    // tells OpenGL how big the screen is
     glViewport(0, 0, size().width() * m_devicePixelRatio, size().height() * m_devicePixelRatio);
 
-    // Students: anything requiring OpenGL calls when the program starts should be done here
+    // students: anything requiring OpenGL calls when the program starts should be done here
     camera.updateWidthHeight(w, h);
     m_screen_width = size().width() * m_devicePixelRatio;
     m_screen_height = size().height() * m_devicePixelRatio;
@@ -235,6 +254,7 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
+<<<<<<< HEAD
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
     const float tileSize = 5.f;
@@ -410,6 +430,11 @@ void Realtime::generateCity(WFCGrid &grid) {
 
 /* PROCEDURAL GENERATION END */
 
+=======
+/**
+ * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
+ */
+>>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -419,13 +444,14 @@ void Realtime::sceneChanged() {
     for (Shape *shape : shapes) {
         delete shape;
     }
-
     shapes.clear();
     shapes.resize(data.shapes.size());
 
+    // setup camera and bezier curve
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
 
+<<<<<<< HEAD
     /* PROCEDURAL GENERATION START */
     WFCGrid grid(20, 20); // 10 x 10 grid
     while (!grid.isFullyCollapsed()) {
@@ -434,6 +460,8 @@ void Realtime::sceneChanged() {
 
     generateCity(grid);
     /* PROCEDURAL GENERATION END */
+=======
+>>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
@@ -456,11 +484,13 @@ void Realtime::sceneChanged() {
                 break;
         }
     }
+
     // process light data
     numLights = fmin(data.lights.size(), 8);
     for (int i = 0; i < numLights; i++) {
         lights[i] = data.lights[i];
     }
+
     // set global constants
     k_a = data.globalData.ka;
     k_s = data.globalData.ks;
@@ -470,6 +500,9 @@ void Realtime::sceneChanged() {
     update(); // asks for a PaintGL() call to occur
 }
 
+/**
+ * @brief Realtime::settingsChanged called when settings change. should happen minimally in nighthawks
+ */
 void Realtime::settingsChanged() {
     // updates camera and shape arrays accordingly
     camera.updateClippingPlanes(settings.nearPlane, settings.farPlane);
