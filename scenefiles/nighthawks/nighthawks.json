@@ -1,0 +1,84 @@
+{
+  "name": "root",
+  "globalData": {
+    "ambientCoeff": 0.5,
+    "diffuseCoeff": 0.5,
+    "specularCoeff": 0.5,
+    "transparentCoeff": 0
+  },
+  "cameraData": {
+    "position": [3.0, 3.0, 3.0],
+    "up": [0.0, 1.0, 0.0],
+    "heightAngle": 30.0,
+    "focus": [0.0, 0.0, 0.0]
+  },
+  "groups": [
+    {
+      "lights": [
+        {
+          "type": "directional",
+          "color": [1.0, 1.0, 1.0],
+          "direction": [-3.0, -2.0, -1.0]
+        }
+      ]
+    },
+    {
+      "groups": [
+        {
+          "primitives": [
+            {
+              "type": "mesh",
+              "diffuse": [0, 0.2, 0.2],
+              "meshFile": "nighthawks_outside_wall.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.8, 0.8, 0.5],
+              "meshFile": "nighthawks_inside_wall.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.8, 0.8, 0.5],
+              "meshFile": "nighthawks_ceiling.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.35, 0.2, 0.1],
+              "meshFile": "nighthawks_chairs.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.45, 0.18, 0.1],
+              "meshFile": "nighthawks_table.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.75, 0.45, 0.15],
+              "meshFile": "nighthawks_door.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.7, 0.5, 0.2],
+              "meshFile": "nighthawks_door_handle.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.35, 0.4, 0.34],
+              "meshFile": "nighthawks_floor.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.3, 0.15, 0.1],
+              "meshFile": "nighthawks_top.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.15, 0.07, 0.05],
+              "meshFile": "nighthawks_upper_building.obj"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
