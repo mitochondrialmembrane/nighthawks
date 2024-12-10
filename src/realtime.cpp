@@ -68,6 +68,9 @@ void Realtime::finish() {
 void Realtime::initializeGL() {
     m_devicePixelRatio = this->devicePixelRatio();
 
+    // set background color
+    glClearColor(0.031, 0.122, 0.114, 1.0f);
+
     // start timer
     m_timer = startTimer(1000/60);
     m_elapsedTimer.start();
@@ -133,8 +136,10 @@ void Realtime::initializeGL() {
     sceneChanged();
 }
 
+/**
+ * @brief Realtime::paintGL called whenever openGL state changes --- actually creates visuals
+ */
 void Realtime::paintGL() {
-    // Students: anything requiring OpenGL calls every frame should be done here
     // Clear screen color and depth before painting
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
