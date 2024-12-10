@@ -241,11 +241,10 @@ void Realtime::generateCity(WFCGrid &grid) {
     std::cout << "grid height: " << grid.height << std::endl;
     std::cout << "grid width: " << grid.width << std::endl;
 
-    // Define the protected area in terms of grid coordinates
-    const int protectedXStart = -5;        // Start X (e.g., 25% into the grid)
-    const int protectedXEnd = 5;     // End X (e.g., 75% into the grid)
-    const int protectedYStart = -5;      // Start Y
-    const int protectedYEnd = 5;    // End Y
+    const int protectedXStart = -5;
+    const int protectedXEnd = 5;
+    const int protectedYStart = -5;
+    const int protectedYEnd = 5;
 
     for (int y = 0; y < grid.height; y++) {
         for (int x = 0; x < grid.width; x++) {
@@ -260,13 +259,13 @@ void Realtime::generateCity(WFCGrid &grid) {
             glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 10, 0.f, y * tileSize - 10));
 
             SceneMaterial mat;
-            mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f); // Example: Non-green color
+            mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f);
             mat.cAmbient = glm::vec4(0.2f, 0.1f, 0.05f, 1.f);
             mat.cSpecular = glm::vec4(1.0f);
             mat.shininess = 16.0f;
             SceneMaterial roofMat;
             roofMat = mat;
-            roofMat.cDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.f); // Example: Non-green color
+            roofMat.cDiffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
             roofMat.cAmbient = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
             roofMat.cSpecular = glm::vec4(1.0f);
             roofMat.shininess = 5.f;
@@ -319,8 +318,8 @@ void Realtime::generateCity(WFCGrid &grid) {
                 // Example: Adding a Door
                 doorMatrix = glm::translate(baseMatrix, glm::vec3(0.f, 0.0f, 1.f)); // Centered on the front face
                 doorMatrix = glm::scale(doorMatrix, glm::vec3(0.5f, 0.4f, 0.1f)); // Thin and tall door
-                doorMat.cDiffuse = glm::vec4(1.f, 1.f, 1.f, 1.0); // Wood color
-                shapes.push_back(new Cube(doorMatrix, mat));
+                doorMat.cDiffuse = glm::vec4(1.f, 0.f, 0.f, 1.0); // Wood color
+                shapes.push_back(new Cube(doorMatrix, doorMat));
                 break;
             }
             }
@@ -409,7 +408,7 @@ void Realtime::sceneChanged() {
     shapes.resize(data.shapes.size());
 
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
-    bezier = Bezier();
+    // bezier = Bezier();
 
     /* PROCEDURAL GENERATION START */
     WFCGrid grid(20, 20); // 10 x 10 grid
@@ -525,8 +524,8 @@ void Realtime::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Space]) camera.translate(glm::vec3(0, delta, 0));
     if (m_keyMap[Qt::Key_Control]) camera.translate(glm::vec3(0, -delta, 0));
 
-    glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
-    camera.translate(bezierTranslate);
+    // glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
+    // camera.translate(bezierTranslate);
 
     update(); // asks for a PaintGL() call to occur
 }
