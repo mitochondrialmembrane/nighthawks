@@ -140,17 +140,18 @@ void Realtime::initializeGL() {
  * @brief Realtime::paintGL called whenever openGL state changes --- actually creates visuals
  */
 void Realtime::paintGL() {
-    // Clear screen color and depth before painting
+    // clear screen color and depth before painting
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // activate the shader program
+    // bind our main (phong) shader
     glUseProgram(m_shader);
 
+    // bind our frame buffer and do some basic setup
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     glViewport(0, 0, m_fbo_width, m_fbo_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // camera info
+    // send camera info to the shader
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "view"), 1, GL_FALSE, &(camera.getViewMatrix())[0][0]);
     glUniformMatrix4fv(glGetUniformLocation(m_shader, "proj"), 1, GL_FALSE, &(camera.getProjMatrix())[0][0]);
     glUniform4fv(glGetUniformLocation(m_shader, "camPos"), 1, &(camera.getCamPos())[0]);
