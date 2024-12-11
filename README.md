@@ -43,13 +43,6 @@ based on its contraints. Then, we loop through the grid again, now knowing one o
 again at which tile now has the least entropy, and collapse that tile, and so on and so forth until the board is fully collapsed. This gives us a slightly
 different layout of buildings every time you look at the project.
 
-*Future Directions:*
-There has been a lot more research done on Kuwahara shaders (e.g. using circular kernels instead of box kernels, or using Gaussian weighting to determine colors instead of uniform distribution, which is what we're currently doing) that allows the painterly shader to have a more believable oil-rendered effect. We could explore these kinds of implementations to make our recreation more closely fit Hopper's painting style.
-
-We could also implement ambient occlusion in our lighting to make soft shadows more realistic, as lighting is a big part of what gives the original painting its unique mood. Currently we only have basic phong lighting.
-
-Another direction could be adding different kinds of tiles beyond just buildings and empty tiles--for example, streetlights or other features you'd usually find in a city environment.
-
 **Mentor TA:**
 Sophie Zhang
 
@@ -57,3 +50,8 @@ Sophie Zhang
 None outside of our team and Sophie!
 
 **Potential Further Steps:**
+There has been a lot more research done on Kuwahara shaders (e.g. using circular kernels instead of box kernels, or using Gaussian weighting to determine colors instead of uniform distribution, which is what we're currently doing) that allows the painterly shader to have a more believable oil-rendered effect. We could explore these kinds of implementations to make our recreation more closely fit Hopper's painting style.
+
+We could also implement ambient occlusion in our lighting to make soft shadows more realistic, as lighting is a big part of what gives the original painting its unique mood. Currently we only have basic phong lighting.
+
+Another direction could be adding different kinds of tiles beyond just buildings and empty tiles--for example, streetlights or other features you'd usually find in a city environment.
