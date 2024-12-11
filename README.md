@@ -30,6 +30,10 @@ The shader looks slightly better when used on more dynamic scenes --- we include
 alongside our main scene in our video. Nevertheless, it functions well in adding an artistic flourish to our scene.
 
 *Bezier Curves:*
+To achieve smooth camera movement along a hand-designed curve of our choice, we used a piecewise Bezier curve.
+Bezier curves are smooth curves that our specified by set of "control points". We implement this logic in Bezier.cpp and Bezier.h. We also 
+account for a piecewise connection of these smooth curves to make a more complex path --- this is hardcoded in. Then, every timerEvent we
+slowly increment the camera along this curve in Realtime.cpp. The net effect is a smooth journey through our scene.
 
 *Procedural Generation of Buildings:*
 Our implementation follows the wave function collapse algorithm for procedural generation. Using a known set of tiles (tall buildings, medium buildings, 
@@ -39,7 +43,6 @@ based on its contraints. Then, we loop through the grid again, now knowing one o
 again at which tile now has the least entropy, and collapse that tile, and so on and so forth until the board is fully collapsed. This gives us a slightly
 different layout of buildings every time you look at the project.
 
-
 **Mentor TA:**
 Sophie Zhang
 
@@ -47,4 +50,3 @@ Sophie Zhang
 None outside of our team and Sophie!
 
 **Potential Further Steps:**
-N
