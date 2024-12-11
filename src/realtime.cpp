@@ -404,7 +404,7 @@ void Realtime::sceneChanged() {
         grid.collapse();
     }
 
-    // generateCity(grid);
+    generateCity(grid);
     /* PROCEDURAL GENERATION END */
 
     // process shape data

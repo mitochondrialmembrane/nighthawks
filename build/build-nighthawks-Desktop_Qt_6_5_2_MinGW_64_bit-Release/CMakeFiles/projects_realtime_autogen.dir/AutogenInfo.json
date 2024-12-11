@@ -388,6 +388,12 @@
 			null
 		],
 		[
+			"C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.h",
+			"MU",
+			"2S5AI7NIVA/moc_building.cpp",
+			null
+		],
+		[
 			"C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/mesh.h",
 			"MU",
 			"2S5AI7NIVA/moc_mesh.cpp",
@@ -573,6 +579,11 @@
 		],
 		[
 			"C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/Sphere.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.cpp",
 			"MU",
 			null
 		],

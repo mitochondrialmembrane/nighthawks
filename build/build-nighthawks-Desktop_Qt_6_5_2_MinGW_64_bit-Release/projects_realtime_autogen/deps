@@ -970,6 +970,8 @@ projects_realtime_autogen/timestamp: \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/Cylinder.h \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/Sphere.cpp \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/Sphere.h \
+	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.cpp \
+	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.h \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/mesh.cpp \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/mesh.h \
 	C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/shape.h \

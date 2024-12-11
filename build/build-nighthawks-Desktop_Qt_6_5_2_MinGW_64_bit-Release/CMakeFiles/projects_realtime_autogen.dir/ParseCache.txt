@@ -1155,3 +1155,5 @@ C:/Users/emily/Desktop/cs1230/nighthawks/src/utils/bezier.cpp
 C:/Users/emily/Desktop/cs1230/nighthawks/src/utils/camera.cpp
 C:/Users/emily/Desktop/cs1230/nighthawks/src/utils/sceneparser.cpp
 C:/Users/emily/Desktop/cs1230/nighthawks/src/utils/pg.h
+C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.h
+C:/Users/emily/Desktop/cs1230/nighthawks/src/shapes/building.cpp

@@ -19,7 +19,7 @@ void getSectorVarianceAndAverageColor(vec2 offset, int boxSize, out vec3 avgColo
     vec3 colorSum = vec3(0.0);
     vec3 squaredColorSum = vec3(0.0);
     float sampleCount = 0.0;
-=
+
     for (int y = 0; y < boxSize; y++) {
         for (int x = 0; x < boxSize; x++) {
             vec2 sampleOffset = offset + vec2(float(x), float(y));
