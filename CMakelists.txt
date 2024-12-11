@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME}
     src/shapes/mesh.h src/shapes/mesh.cpp
     src/utils/bezier.h src/utils/bezier.cpp
     src/utils/pg.h
+    src/shapes/building.h src/shapes/building.cpp
 
 )
 

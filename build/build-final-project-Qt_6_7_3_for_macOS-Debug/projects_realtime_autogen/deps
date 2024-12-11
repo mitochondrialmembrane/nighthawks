@@ -702,6 +702,7 @@ projects_realtime_autogen/timestamp: \
 	/Users/khalildesai/CS1230/final-project/src/utils/bezier.h \
 	/Users/khalildesai/CS1230/final-project/src/utils/camera.cpp \
 	/Users/khalildesai/CS1230/final-project/src/utils/camera.h \
+	/Users/khalildesai/CS1230/final-project/src/utils/pg.h \
 	/Users/khalildesai/CS1230/final-project/src/utils/realtimeutils.cpp \
 	/Users/khalildesai/CS1230/final-project/src/utils/realtimeutils.h \
 	/Users/khalildesai/CS1230/final-project/src/utils/scenedata.h \

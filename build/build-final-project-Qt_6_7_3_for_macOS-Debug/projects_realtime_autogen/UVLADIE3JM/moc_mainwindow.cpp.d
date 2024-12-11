@@ -412,4 +412,5 @@
   /Users/khalildesai/CS1230/final-project/src/utils/aspectratiowidget/aspectratiowidget.hpp \
   /Users/khalildesai/CS1230/final-project/src/utils/bezier.h \
   /Users/khalildesai/CS1230/final-project/src/utils/camera.h \
+  /Users/khalildesai/CS1230/final-project/src/utils/pg.h \
   /Users/khalildesai/CS1230/final-project/src/utils/scenedata.h
