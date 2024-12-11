@@ -254,7 +254,6 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
-<<<<<<< HEAD
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
     const float tileSize = 5.f;
@@ -430,11 +429,9 @@ void Realtime::generateCity(WFCGrid &grid) {
 
 /* PROCEDURAL GENERATION END */
 
-=======
 /**
  * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
  */
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -451,7 +448,6 @@ void Realtime::sceneChanged() {
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
 
-<<<<<<< HEAD
     /* PROCEDURAL GENERATION START */
     WFCGrid grid(20, 20); // 10 x 10 grid
     while (!grid.isFullyCollapsed()) {
@@ -460,8 +456,7 @@ void Realtime::sceneChanged() {
 
     generateCity(grid);
     /* PROCEDURAL GENERATION END */
-=======
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
+
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
