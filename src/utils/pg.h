@@ -62,7 +62,6 @@ public:
 
 private:
     void propagateConstraints() {
-        // For simplicity, define some constraints
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Tile& cell = grid[y][x];

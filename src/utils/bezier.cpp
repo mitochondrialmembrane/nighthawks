@@ -7,14 +7,59 @@ Bezier::Bezier() :
 {
     currPos = glm::vec3();
 
-    points.push_back(glm::vec3(0, 0, 0));
-    points.push_back(glm::vec3(2, 0, 2));
-    points.push_back(glm::vec3(0, 0, 4));
-    points.push_back(glm::vec3(-2, 0, 2));
-    ctrls.push_back(glm::vec3(1.2, 0, 0));
-    ctrls.push_back(glm::vec3(0, 0, 1.2));
-    ctrls.push_back(glm::vec3(-1.2, 0, 0));
-    ctrls.push_back(glm::vec3(0, 0, -1.2));
+    // points.push_back(glm::vec3(0, 0, 0));
+    // points.push_back(glm::vec3(2, 0, 2));
+    // points.push_back(glm::vec3(0, 0, 4));
+    // points.push_back(glm::vec3(-2, 0, 2));
+    // ctrls.push_back(glm::vec3(1.2, 0, 0));
+    // ctrls.push_back(glm::vec3(0, 0, 1.2));
+    // ctrls.push_back(glm::vec3(-1.2, 0, 0));
+    // ctrls.push_back(glm::vec3(0, 0, -1.2));
+    points.clear();
+    ctrls.clear();
+
+    points.push_back(glm::vec3(15, 15, 15));  // start far
+    points.push_back(glm::vec3(12, 12, 12));
+    points.push_back(glm::vec3(6, 3, 6));
+    points.push_back(glm::vec3(2, 0, 2));     // final zoom
+
+    // controls
+    ctrls.push_back(glm::vec3(-2, -1, -2));
+    ctrls.push_back(glm::vec3(-2, -1, -2));
+    ctrls.push_back(glm::vec3(-1, -1, -1));
+    ctrls.push_back(glm::vec3(-1, -1, -1));
+
+    // circle building
+    points.push_back(glm::vec3(2, -1, 0));
+    points.push_back(glm::vec3(-3, -1, 4));
+    points.push_back(glm::vec3(-5, -1, 2));
+    points.push_back(glm::vec3(-7, -1, -5));
+    points.push_back(glm::vec3(-9, -1, -7));
+    points.push_back(glm::vec3(-10, -1, -7));
+
+
+    // points.push_back(glm::vec3(-7, 0.2, -8));
+    // points.push_back(glm::vec3(2, 0.2, 2));
+
+    // More natural circular motion control points
+    ctrls.push_back(glm::vec3(0, 0, 0));
+    ctrls.push_back(glm::vec3(-2, 0, 0));
+    ctrls.push_back(glm::vec3(-2, 0, 0));
+    ctrls.push_back(glm::vec3(-1, 0, -1));
+    ctrls.push_back(glm::vec3(-1, 0, -1));
+    ctrls.push_back(glm::vec3(-1, 0, 0));
+
+
+
+
+    // ctrls.push_back(glm::vec3(-2, 0, -5.f));
+
+    // ctrls.push_back(glm::vec3(-2, 0, 2));
+    // ctrls.push_back(glm::vec3(-2, 0, 5));
+    // ctrls.push_back(glm::vec3(-2, 0, 3));
+    // ctrls.push_back(glm::vec3(-3, 0, 2));
+    // ctrls.push_back(glm::vec3(2, 1, 0));    // ret
+
 
     updateControls();
 }

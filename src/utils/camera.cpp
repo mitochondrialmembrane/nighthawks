@@ -115,6 +115,7 @@ void Camera::translate(glm::vec3 offset) {
         0, 0, 1, 0,
         -offset[0], -offset[1], -offset[2], 1
         );
+    // viewMatrix = calculateViewMatrix(glm::vec3(0,0,0));
     viewMatrixInverted = glm::inverse(viewMatrix);
     camPos = viewMatrixInverted[3];
 }
@@ -159,4 +160,9 @@ float Camera::getAperture() const {
 
 glm::vec4 Camera::getCamPos() {
     return camPos;
+}
+
+void Camera::setLookVector(const glm::vec3& look) {
+    viewMatrix = calculateViewMatrix(look);
+    viewMatrixInverted = glm::inverse(viewMatrix);
 }

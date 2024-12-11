@@ -47,6 +47,8 @@ public:
     void updateWidthHeight(int width, int height);
     void translate(glm::vec3 offset);
     void rotate(glm::vec3 axis, float angle);
+    void setLookVector(const glm::vec3& look);
+
 
 private:
     SceneCameraData data;

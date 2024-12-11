@@ -23,6 +23,16 @@
       ]
     },
     {
+      "translate": [0.0, 2.0, -1.0],
+      "lights": [
+        {
+          "type": "point",
+          "color": [0.2, 0.2, 0.9],
+          "attenuationCoeff": [1, 0, 0]
+        }
+      ]
+    },
+    {
       "groups": [
         {
           "primitives": [

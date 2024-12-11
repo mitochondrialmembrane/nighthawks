@@ -254,7 +254,6 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
-<<<<<<< HEAD
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
     const float tileSize = 5.f;
@@ -364,77 +363,13 @@ void Realtime::generateCity(WFCGrid &grid) {
 
 
 
-    //     for (int y = 0; y < grid.height; y++) {
-    //         for (int x = 0; x < grid.width; x++) {
-
-    //             // Skip tiles within the protected area
-    //             if (x - 10 >= protectedXStart && x - 10 < protectedXEnd &&
-    //                 y - 10 >= protectedYStart && y - 10 < protectedYEnd) {
-    //                 continue;
-    //             }
-
-    //             Tile& tile = grid.grid[y][x];
-    //             glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 10, 0.f, y * tileSize - 10));
-
-    //             SceneMaterial mat;
-    //             mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f); // Example: Non-green color
-    //             mat.cAmbient = glm::vec4(0.2f, 0.1f, 0.05f, 1.f);
-    //             mat.cSpecular = glm::vec4(1.0f);
-    //             mat.shininess = 16.0f;
-    //             SceneMaterial roofMat;
-    //             glm::mat4 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 1.f, 0.f));
-    //             SceneMaterial doorMat;
-    //             glm::mat4 doorMatrix;
-
-    //             switch (tile.type) {
-    //             case SMALL_BUILDING:
-    //                 mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
-    //                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1.f, 2.f + rand() % 2, 1.f));
-    //                 shapes.push_back(new Cube(modelMatrix, mat));
-
-    //                 // Example: Adding a Door
-    //                 doorMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.0f, 1.f)); // Centered on the front face
-    //                 doorMatrix = glm::scale(doorMatrix, glm::vec3(0.5f, 0.4f, 0.1f)); // Thin and tall door
-    //                 // doorMat.cDiffuse = glm::vec4(0.4, 0.2, 0.1, 1.0); // Wood color
-    //                 // shapes.push_back(new Cube(doorMatrix, mat));
-    //                 break;
-    //             case MEDIUM_BUILDING:
-    //                 mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
-    //                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1.5f, 4.f + rand() % 2, 1.5f));
-    //                 shapes.push_back(new Cube(modelMatrix, mat));
-    //                 break;
-    //             case TALL_BUILDING:
-    //                 mat.cDiffuse = glm::vec4(0.2, 0.2, 0.4, 1.0); // Glass color
-    //                 modelMatrix = glm::scale(modelMatrix, glm::vec3(2.f, 8.f + rand() % 3, 2.f));
-    //                 shapes.push_back(new Cube(modelMatrix, mat));
-
-    //                 // Add antennae for tall buildings
-    //                 roofMat = mat;
-    //                 roofMat.cDiffuse = glm::vec4(0.7, 0.7, 0.7, 1.0); // metal
-    //                 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, 0.5f, 0.f));
-    //                 roofMatrix = glm::scale(roofMatrix, glm::vec3(0.1f, 0.3f, 0.1f));
-    //                 shapes.push_back(new Cylinder(roofMatrix, roofMat));
-
-    //                 roofMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, 0.5f, 0.3f));
-    //                 roofMatrix = glm::scale(roofMatrix, glm::vec3(0.1f, 0.4f, 0.1f));
-    //                 shapes.push_back(new Cylinder(roofMatrix, roofMat));
-    //                 break;
-    //             default:
-    //                 break;
-    //             }
-
-
-    // }
-    // }
 }
 
 /* PROCEDURAL GENERATION END */
 
-=======
 /**
  * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
  */
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -451,17 +386,15 @@ void Realtime::sceneChanged() {
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
 
-<<<<<<< HEAD
     /* PROCEDURAL GENERATION START */
     WFCGrid grid(20, 20); // 10 x 10 grid
     while (!grid.isFullyCollapsed()) {
         grid.collapse();
     }
 
-    generateCity(grid);
+    // generateCity(grid);
     /* PROCEDURAL GENERATION END */
-=======
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
+
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
@@ -572,8 +505,14 @@ void Realtime::timerEvent(QTimerEvent *event) {
     if (m_keyMap[Qt::Key_Space]) camera.translate(glm::vec3(0, delta, 0));
     if (m_keyMap[Qt::Key_Control]) camera.translate(glm::vec3(0, -delta, 0));
 
-    // glm::vec3 bezierTranslate = bezier.incrementTime(deltaTime);
-    // camera.translate(bezierTranslate);
+    glm::vec3 bezierTranslate = bezier.incrementTime(0.25f * deltaTime);
+    camera.translate(bezierTranslate);
+
+    // update the look vector to keep the camera looking at the building
+    glm::vec3 buildingPosition(0.8f, 0.8f, -0.2f); // building's focus position
+    glm::vec3 cameraPosition = glm::vec3(camera.getCamPos()); // current camera position
+    glm::vec3 look = glm::normalize(buildingPosition - cameraPosition);
+    camera.setLookVector(look); // update look vector
 
     update(); // asks for a PaintGL() call to occur
 }
