@@ -694,6 +694,8 @@ projects_realtime_autogen/timestamp: \
 	/Users/khalildesai/CS1230/final-project/src/shapes/Cylinder.h \
 	/Users/khalildesai/CS1230/final-project/src/shapes/Sphere.cpp \
 	/Users/khalildesai/CS1230/final-project/src/shapes/Sphere.h \
+	/Users/khalildesai/CS1230/final-project/src/shapes/building.cpp \
+	/Users/khalildesai/CS1230/final-project/src/shapes/building.h \
 	/Users/khalildesai/CS1230/final-project/src/shapes/mesh.cpp \
 	/Users/khalildesai/CS1230/final-project/src/shapes/mesh.h \
 	/Users/khalildesai/CS1230/final-project/src/shapes/shape.h \

@@ -476,6 +476,12 @@
 			null
 		],
 		[
+			"/Users/khalildesai/CS1230/final-project/src/shapes/building.h",
+			"MU",
+			"2S5AI7NIVA/moc_building.cpp",
+			null
+		],
+		[
 			"/Users/khalildesai/CS1230/final-project/src/shapes/mesh.h",
 			"MU",
 			"2S5AI7NIVA/moc_mesh.cpp",
@@ -655,6 +661,11 @@
 		],
 		[
 			"/Users/khalildesai/CS1230/final-project/src/shapes/Sphere.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/khalildesai/CS1230/final-project/src/shapes/building.cpp",
 			"MU",
 			null
 		],
