@@ -291,8 +291,8 @@ void Realtime::generateCity(WFCGrid &grid) {
             glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 32.f, 0.f, y * tileSize - 42.f));
 
             SceneMaterial mat;
-            mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f);
-            mat.cAmbient = glm::vec4(0.2f, 0.1f, 0.05f, 1.f);
+            mat.cDiffuse = glm::vec4(0.f, 0.2f, 0.2f, 1.f);
+            mat.cAmbient = glm::vec4(0.f, 0.1f, 0.1f, 1.f);
             mat.cSpecular = glm::vec4(1.0f);
             mat.shininess = 16.0f;
             SceneMaterial roofMat;
@@ -309,14 +309,15 @@ void Realtime::generateCity(WFCGrid &grid) {
             SceneMaterial topMat;
 
             SceneMaterial floorMat = mat;
-            floorMat.cDiffuse = glm::vec4(0.17f,0.60f,0.38f,1.f);
-            //shapes.push_back(new Cube(glm::translate(glm::scale(modelMatrix, glm::vec3(20.f, 0.1f, 20.f)), glm::vec3(0,-20.f,0)), floorMat));
-
+            floorMat.cAmbient = glm::vec4(0.0f,0.0f,0.0f,1.f);
+            floorMat.cDiffuse = glm::vec4(0.4f,0.55f,0.45f,1.f);
+            floorMat.cSpecular = glm::vec4(0.f,0.f,0.f,1.f);
+            shapes.push_back(new Cube(glm::translate(glm::scale(modelMatrix, glm::vec3(20.f, 0.1f, 20.f)), glm::vec3(0,-0.51f,0)), floorMat));
             float width = 6.f + (rand() % 10) / 6;
             switch (tile.type) {
             case SMALL_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
-                float height = 2.5f + rand() % 2;
+                mat.cDiffuse = glm::vec4(0.15, 0.07, 0.05, 1.0); // Brick color
+                float height = 3.f + rand() % 2;
                 //modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
                 //modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
                 //shapes.push_back(new Cube(modelMatrix, mat));
@@ -324,7 +325,7 @@ void Realtime::generateCity(WFCGrid &grid) {
                 break;
             }
             case MEDIUM_BUILDING: {
-                mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
+                mat.cDiffuse = glm::vec4(0, 0.2, 0.2, 1.0); // Concrete color
                 float height = 4.f + rand() % 2;
                 //modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
                 //modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
@@ -333,7 +334,8 @@ void Realtime::generateCity(WFCGrid &grid) {
                 break;
             }
             case TALL_BUILDING: {
-                float totalHeight = 8.f + rand() % 3; // Total building height
+                mat.cDiffuse = glm::vec4(0, 0.2, 0.15, 1.0); // Concrete color
+                float totalHeight = 12.f + rand() % 3; // Total building height
                 shapes.push_back(new Building(modelMatrix, mat, width, totalHeight, meshes));
                 /**
                 float bottomHeight = totalHeight / 2.f; // Height of the bottom layer
