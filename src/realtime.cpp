@@ -257,7 +257,7 @@ void Realtime::resizeGL(int w, int h) {
 
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
-    const float tileSize = 5.f;
+    const float tileSize = 10.f;
 
     std::cout << "grid height: " << 20 << std::endl;
     std::cout << "grid width: " << 20 << std::endl;
@@ -288,7 +288,7 @@ void Realtime::generateCity(WFCGrid &grid) {
 
             Tile& tile = grid.grid[y][x];
 
-            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize, 0.f, y * tileSize));
+            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 32.f, 0.f, y * tileSize - 42.f));
 
             SceneMaterial mat;
             mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f);
@@ -307,32 +307,35 @@ void Realtime::generateCity(WFCGrid &grid) {
             glm::mat4 doorMatrix;
             SceneMaterial bottomMat;
             SceneMaterial topMat;
-            shapes.push_back(new Building(modelMatrix, mat, 7, 12, meshes));
 
             SceneMaterial floorMat = mat;
             floorMat.cDiffuse = glm::vec4(0.17f,0.60f,0.38f,1.f);
-            shapes.push_back(new Cube(glm::translate(glm::scale(modelMatrix, glm::vec3(20.f, 0.1f, 20.f)), glm::vec3(0,-20.f,0)), floorMat));
+            //shapes.push_back(new Cube(glm::translate(glm::scale(modelMatrix, glm::vec3(20.f, 0.1f, 20.f)), glm::vec3(0,-20.f,0)), floorMat));
 
-            /**
+            float width = 6.f + (rand() % 10) / 6;
             switch (tile.type) {
             case SMALL_BUILDING: {
                 mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
                 float height = 2.5f + rand() % 2;
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
-                shapes.push_back(new Cube(modelMatrix, mat));
+                //modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
+                //modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
+                //shapes.push_back(new Cube(modelMatrix, mat));
+                shapes.push_back(new Building(modelMatrix, mat, width, height, meshes));
                 break;
             }
             case MEDIUM_BUILDING: {
                 mat.cDiffuse = glm::vec4(0.4, 0.4, 0.6, 1.0); // Concrete color
                 float height = 4.f + rand() % 2;
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
-                shapes.push_back(new Cube(modelMatrix, mat));
+                //modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, height / 2.f, 0.f)); // Adjust for bottom alignment
+                //modelMatrix = glm::scale(modelMatrix, glm::vec3(5.f, height, 5.f));
+                //shapes.push_back(new Cube(modelMatrix, mat));
+                shapes.push_back(new Building(modelMatrix, mat, width, height, meshes));
                 break;
             }
             case TALL_BUILDING: {
                 float totalHeight = 8.f + rand() % 3; // Total building height
+                shapes.push_back(new Building(modelMatrix, mat, width, totalHeight, meshes));
+                /**
                 float bottomHeight = totalHeight / 2.f; // Height of the bottom layer
                 float topHeight = totalHeight - bottomHeight; // Height of the top layer
 
@@ -368,13 +371,13 @@ void Realtime::generateCity(WFCGrid &grid) {
 
                 glm::mat4 antennaMatrix2 = glm::translate(antennaBaseMatrix, glm::vec3(0.4f, 1.f, 0.4f));
                 antennaMatrix2 = glm::scale(antennaMatrix2, glm::vec3(0.25f, 1.5f, 0.25f));
-                shapes.push_back(new Cylinder(antennaMatrix2, roofMat));
+                shapes.push_back(new Cylinder(antennaMatrix2, roofMat));**/
 
                 break;
             }
             default:
                 break;
-            }**/
+            }
         }
     }
 
@@ -404,7 +407,7 @@ void Realtime::sceneChanged() {
     bezier = Bezier();
 
     /* PROCEDURAL GENERATION START */
-    WFCGrid grid(1, 1); // 10 x 10 grid
+    WFCGrid grid(10, 10); // 10 x 10 grid
     while (!grid.isFullyCollapsed()) {
         grid.collapse();
     }
