@@ -59,6 +59,8 @@
             {
               "type": "mesh",
               "diffuse": [0.45, 0.18, 0.1],
+              "specular": [0.5, 0.5, 0.5],
+              "shininess": 25,
               "meshFile": "nighthawks/nighthawks_table.obj"
             },
             {
@@ -69,6 +71,8 @@
             {
               "type": "mesh",
               "diffuse": [0.7, 0.5, 0.2],
+              "specular": [0.7, 0.5, 0.2],
+              "shininess": 50,
               "meshFile": "nighthawks/nighthawks_door_handle.obj"
             },
             {
@@ -85,6 +89,40 @@
               "type": "mesh",
               "diffuse": [0.15, 0.07, 0.05],
               "meshFile": "nighthawks/nighthawks_upper_building.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0, 0.2, 0.2],
+              "meshFile": "nighthawks/nighthawks_outer_building.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.4, 0.4, 0.4],
+              "meshFile": "nighthawks/amogus_visors.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.7, 0, 0],
+              "specular": [0.7, 0.3, 0.3],
+              "meshFile": "nighthawks/amogus0.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0, 0, 0.3],
+              "specular": [0.3, 0.3, 0.7],
+              "meshFile": "nighthawks/amogus1.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.7, 0.6, 0],
+              "specular": [0.7, 0.3, 0.3],
+              "meshFile": "nighthawks/amogus2.obj"
+            },
+            {
+              "type": "mesh",
+              "diffuse": [0.8, 0.8, 0.8],
+              "specular": [1, 1, 1],
+              "meshFile": "nighthawks/amogus3.obj"
             }
           ]
         }
