@@ -25,7 +25,6 @@ glm::vec3 Bezier::incrementTime(float deltaT) {
 
     glm::vec3 lastPos = currPos;
     currPos = calculateBezier();
-    std::cout << currPos[0] << "," << currPos[1] << "," << currPos[2] << "\n";
     return currPos - lastPos;
 }
 

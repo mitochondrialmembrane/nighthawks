@@ -12,6 +12,7 @@
 #include "shapes/Cylinder.h"
 #include "shapes/Sphere.h"
 #include "shapes/mesh.h"
+#include "shapes/building.h"
 #include "utils/shaderloader.h"
 #include "utils/realtimeutils.h"
 #include <glm/glm.hpp>
@@ -254,18 +255,27 @@ void Realtime::resizeGL(int w, int h) {
     makeFBO();
 }
 
-<<<<<<< HEAD
 /* PROCEDURAL GENERATION START */
 void Realtime::generateCity(WFCGrid &grid) {
     const float tileSize = 5.f;
 
-    std::cout << "grid height: " << grid.height << std::endl;
-    std::cout << "grid width: " << grid.width << std::endl;
+    std::cout << "grid height: " << 20 << std::endl;
+    std::cout << "grid width: " << 20 << std::endl;
 
     const int protectedXStart = -3;
     const int protectedXEnd = -1;
     const int protectedYStart = -2;
     const int protectedYEnd = 0;
+
+    Mesh windowMesh = Mesh(glm::mat4(1), SceneMaterial(), "scenefiles/nighthawks/building_window.obj");
+    Mesh windowMesh1 = Mesh(glm::mat4(1), SceneMaterial(), "scenefiles/nighthawks/building_window1.obj");
+    Mesh windowMesh2 = Mesh(glm::mat4(1), SceneMaterial(), "scenefiles/nighthawks/building_window2.obj");
+    Mesh windowMesh3 = Mesh(glm::mat4(1), SceneMaterial(), "scenefiles/nighthawks/building_window3.obj");
+    std::vector<float> meshes[4];
+    meshes[0] = windowMesh.generateShape();
+    meshes[1] = windowMesh1.generateShape();
+    meshes[2] = windowMesh2.generateShape();
+    meshes[3] = windowMesh3.generateShape();
 
     for (int y = 0; y < grid.height; y++) {
         for (int x = 0; x < grid.width; x++) {
@@ -278,7 +288,7 @@ void Realtime::generateCity(WFCGrid &grid) {
 
             Tile& tile = grid.grid[y][x];
 
-            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize - 35.f, 0.f, y * tileSize - 45.f));
+            glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(x * tileSize, 0.f, y * tileSize));
 
             SceneMaterial mat;
             mat.cDiffuse = glm::vec4(0.8f, 0.4f, 0.2f, 1.f);
@@ -297,8 +307,8 @@ void Realtime::generateCity(WFCGrid &grid) {
             glm::mat4 doorMatrix;
             SceneMaterial bottomMat;
             SceneMaterial topMat;
-
-
+            shapes.push_back(new Building(modelMatrix, mat, 7, 12, meshes));
+            /**
             switch (tile.type) {
             case SMALL_BUILDING: {
                 mat.cDiffuse = glm::vec4(0.8, 0.6, 0.5, 1.0); // Brick color
@@ -357,8 +367,9 @@ void Realtime::generateCity(WFCGrid &grid) {
 
                 break;
             }
-
-            }
+            default:
+                break;
+            }**/
         }
     }
 
@@ -429,12 +440,9 @@ void Realtime::generateCity(WFCGrid &grid) {
 }
 
 /* PROCEDURAL GENERATION END */
-
-=======
 /**
  * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
  */
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
 void Realtime::sceneChanged() {
     RenderData data;
 
@@ -451,17 +459,14 @@ void Realtime::sceneChanged() {
     camera = Camera(data.cameraData, size().width(), size().height(), settings.nearPlane, settings.farPlane);
     bezier = Bezier();
 
-<<<<<<< HEAD
     /* PROCEDURAL GENERATION START */
-    WFCGrid grid(20, 20); // 10 x 10 grid
+    WFCGrid grid(1, 1); // 10 x 10 grid
     while (!grid.isFullyCollapsed()) {
         grid.collapse();
     }
 
     generateCity(grid);
     /* PROCEDURAL GENERATION END */
-=======
->>>>>>> e5a77da610b71ca504cc0be5b306346530ab904d
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
