@@ -1,8 +1,10 @@
 #version 330 core
 in vec2 out_uv;
 uniform sampler2D tex;
+
 uniform bool isInverting;
 uniform bool isSharpening;
+
 uniform float pixelW;
 uniform float pixelH;
 
@@ -17,8 +19,7 @@ void getSectorVarianceAndAverageColor(vec2 offset, int boxSize, out vec3 avgColo
     vec3 colorSum = vec3(0.0);
     vec3 squaredColorSum = vec3(0.0);
     float sampleCount = 0.0;
-
-
+=
     for (int y = 0; y < boxSize; y++) {
         for (int x = 0; x < boxSize; x++) {
             vec2 sampleOffset = offset + vec2(float(x), float(y));
@@ -38,7 +39,7 @@ void getSectorVarianceAndAverageColor(vec2 offset, int boxSize, out vec3 avgColo
 void main() {
     vec3 boxAvgColors[4];
     float boxVariances[4];
-    int kernelSize = 20;
+    int kernelSize = 10;
 
     getSectorVarianceAndAverageColor(vec2(-kernelSize, -kernelSize), kernelSize, boxAvgColors[0], boxVariances[0]);
     getSectorVarianceAndAverageColor(vec2(0, -kernelSize), kernelSize, boxAvgColors[1], boxVariances[1]);
@@ -57,6 +58,9 @@ void main() {
 
     fragColor = vec4(finalColor, 1.0);
 }
+
+
+
 
 /**
 vec4 calculateMean(vec2 start, int boxSize) {

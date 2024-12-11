@@ -440,6 +440,7 @@ void Realtime::generateCity(WFCGrid &grid) {
 }
 
 /* PROCEDURAL GENERATION END */
+
 /**
  * @brief Realtime::sceneChanged called whenever a new scene is loaded (so only once in nighthawks)
  */
@@ -467,6 +468,7 @@ void Realtime::sceneChanged() {
 
     generateCity(grid);
     /* PROCEDURAL GENERATION END */
+
     // process shape data
     for (int i = 0; i < data.shapes.size(); i++) {
         RenderShapeData shape = data.shapes[i];
