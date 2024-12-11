@@ -308,6 +308,11 @@ void Realtime::generateCity(WFCGrid &grid) {
             SceneMaterial bottomMat;
             SceneMaterial topMat;
             shapes.push_back(new Building(modelMatrix, mat, 7, 12, meshes));
+
+            SceneMaterial floorMat = mat;
+            floorMat.cDiffuse = glm::vec4(0.17f,0.60f,0.38f,1.f);
+            shapes.push_back(new Cube(glm::translate(glm::scale(modelMatrix, glm::vec3(20.f, 0.1f, 20.f)), glm::vec3(0,-20.f,0)), floorMat));
+
             /**
             switch (tile.type) {
             case SMALL_BUILDING: {
