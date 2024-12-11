@@ -31,8 +31,8 @@
       "lights": [
         {
           "type": "point",
-          "color": [0.7, 0.7, 0.1],
-          "attenuationCoeff": [1, 0, 0]
+          "color": [0.7, 0.7, 0.7],
+          "attenuationCoeff": [1, 0.05, 0]
         }
       ]
     },
@@ -41,8 +41,8 @@
       "lights": [
         {
           "type": "point",
-          "color": [0.7, 0.7, 0.0],
-          "attenuationCoeff": [1, 0, 0]
+          "color": [0.7, 0.7, 0.7],
+          "attenuationCoeff": [1, 0.05, 0]
         }
       ]
     },
