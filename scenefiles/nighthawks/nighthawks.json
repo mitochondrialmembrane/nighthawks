@@ -103,13 +103,13 @@
             {
               "type": "mesh",
               "diffuse": [0.7, 0, 0],
-              "specular": [0.7, 0.3, 0.3],
+              "specular": [0.7, 0.1, 0.5],
               "meshFile": "nighthawks/amogus0.obj"
             },
             {
               "type": "mesh",
               "diffuse": [0, 0, 0.3],
-              "specular": [0.3, 0.3, 0.7],
+              "specular": [0.1, 0.4, 0.6],
               "meshFile": "nighthawks/amogus1.obj"
             },
             {
