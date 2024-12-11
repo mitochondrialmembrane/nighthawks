@@ -13,7 +13,7 @@ we've learned from this semester and some new techniques. Originally an oil-pain
 "Nighthawks" is one of the most well-known pieces of American art and is emblematic of the mid-20th century
 era.
 
-Our recreation guides the camera down from above a procedurally generate array of buildings along a predetermined path.
+Our recreation guides the camera down from above a procedurally generated array of buildings along a predetermined path.
 The camera is drawn into position as we peer into the diner at the center --- one which has some new and strange visitors!
 
 We hope you enjoy our project!
