@@ -52,3 +52,9 @@
 1648	3976	1733953615365116819	CMakeFiles/projects_realtime.dir/src/mainwindow.cpp.o	9b2e55f111f4264a
 1648	4192	1733953615365000781	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	fd95a5e8353aa9e8
 4192	4381	1733953617909259218	projects_realtime	53918464a9b496ce
+10	35	1733956041638039879	projects_realtime_autogen/timestamp	ed6730016c063365
+10	35	1733956041638039879	projects_realtime_autogen/mocs_compilation.cpp	ed6730016c063365
+10	35	1733956041638039879	/Users/khalildesai/CS1230/final-project/build/build-final-project-Qt_6_7_3_for_macOS-Debug/projects_realtime_autogen/timestamp	ed6730016c063365
+10	35	1733956041638039879	/Users/khalildesai/CS1230/final-project/build/build-final-project-Qt_6_7_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	ed6730016c063365
+35	1034	1733956041662620432	CMakeFiles/projects_realtime.dir/src/shapes/mesh.cpp.o	b6a11f64ef115094
+1034	1180	1733956042661504926	projects_realtime	53918464a9b496ce

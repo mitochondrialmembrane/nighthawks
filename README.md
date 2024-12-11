@@ -23,7 +23,7 @@ We hope you enjoy our project!
 *Painterly Shader:*
 In order to give the diner at the center of our scene the effect of being "painted," we implemented a non-photorealistic
 shader designed to make scenes look especially stylized. In particular, we wrote a post-processing effect called the "Kuwahara"
-filter using a texture shader. This filter calculates the value of each pixel by 1) centering a box at the pixel 2) dividing the box
+filter using a texture shader (texture.frag). This filter calculates the value of each pixel by 1) centering a box at the pixel 2) dividing the box
 into 4 sectors 3) calculating the average color and variance for each sector and 4) choosing the average color with the lowest variance.
 
 The shader looks slightly better when used on more dynamic scenes --- we include an example of a scene where it looks particularly good
@@ -32,6 +32,7 @@ alongside our main scene in our video. Nevertheless, it functions well in adding
 *Bezier Curves:*
 
 *Procedural Generation of Buildings:*
+
 
 
 **Mentor TA:**
