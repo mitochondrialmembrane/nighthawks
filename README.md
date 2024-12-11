@@ -32,7 +32,12 @@ alongside our main scene in our video. Nevertheless, it functions well in adding
 *Bezier Curves:*
 
 *Procedural Generation of Buildings:*
-
+Our implementation follows the wave function collapse algorithm for procedural generation. Using a known set of tiles (tall buildings, medium buildings, 
+small buildings, and empty tiles), we lay our scene on top of a 10-tile-by-10-tile grid and define constraints for each tile (e.g. tall buildings can't be next
+to small buildings, etc.). Then, we loop through our grid and determine the tile with the least amount of entropy, and collapse that tile into one known tile
+based on its contraints. Then, we loop through the grid again, now knowing one of our tiles. That choices ripples through the rest of the grid as we look
+again at which tile now has the least entropy, and collapse that tile, and so on and so forth until the board is fully collapsed. This gives us a slightly
+different layout of buildings every time you look at the project.
 
 **Mentor TA:**
 Sophie Zhang
