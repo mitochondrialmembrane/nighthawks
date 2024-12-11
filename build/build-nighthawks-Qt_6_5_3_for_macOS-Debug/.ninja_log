@@ -1,105 +1,33 @@
 # ninja log v5
-25	62	1733930446262745945	StaticGLEW_autogen/timestamp	b3b008bca999ce7f
-1858	3043	1733881319995849685	CMakeFiles/projects_realtime.dir/src/shapes/Cone.cpp.o	f6bb4da105dc9623
-1860	3028	1733881319982997215	CMakeFiles/projects_realtime.dir/src/shapes/Cylinder.cpp.o	94eeccd3fee70ed0
-1003	1059	1733930447260216000	libStaticGLEW.a	b2439c3df4e609d5
-99	1829	1733889002187596025	CMakeFiles/projects_realtime.dir/src/shapes/building.cpp.o	268d88fd5de9296
-91	1575	1733886571622320168	CMakeFiles/projects_realtime.dir/src/shapes/mesh.cpp.o	802658ea541387c3
-1944	2481	1733930448677433190	CMakeFiles/projects_realtime.dir/src/utils/bezier.cpp.o	f797b84a39722571
-1851	2635	1733881319591963665	CMakeFiles/projects_realtime.dir/src/settings.cpp.o	dc0e75099f2e7dc2
-25	62	1733930446262745945	StaticGLEW_autogen/mocs_compilation.cpp	b3b008bca999ce7f
-1914	1943	1733930448143625099	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/.rcc/qrc_Resources.cpp	3506f48cfd759d95
-3345	3545	1733930449741545324	projects_realtime	4498c1d2a2e23edd
-1853	3623	1733881320575662109	CMakeFiles/projects_realtime.dir/src/utils/sceneparser.cpp.o	cf94055891a8a598
-1059	1914	1733930448105788000	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-63	1003	1733930447196904552	CMakeFiles/StaticGLEW.dir/src/utils/camera.cpp.o	90a0565f9c1304ae
-211	292	1733881317249466793	CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen/mocs_compilation.cpp.o	272b326742c08f7d
-1059	1914	1733930448105788000	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-1059	1914	1733930448105788000	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
+1851	3931	1733881320886890701	CMakeFiles/projects_realtime.dir/src/utils/scenefilereader.cpp.o	8a9c793e11fa00dd
+1944	3173	1733930449365334685	CMakeFiles/projects_realtime.dir/src/mainwindow.cpp.o	cb7cd810c602b787
+1861	3589	1733881320542203052	CMakeFiles/projects_realtime.dir/src/utils/realtimeutils.cpp.o	5d69f4c293ecce6b
+1914	1943	1733930448143625099	.rcc/qrc_Resources.cpp	3506f48cfd759d95
+104	3140	1733940837695748986	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
+19	93	1733940834654556188	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
+1943	2988	1733930449182338146	CMakeFiles/projects_realtime.dir/projects_realtime_autogen/mocs_compilation.cpp.o	9e008932cb12c7ef
+1943	3040	1733930449232681278	CMakeFiles/projects_realtime.dir/src/main.cpp.o	2ff3c946dde6f24b
+1944	1991	1733930448188601764	CMakeFiles/projects_realtime.dir/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/.rcc/qrc_Resources.cpp.o	663a630240ba75b0
+1860	3020	1733881319973616342	CMakeFiles/projects_realtime.dir/src/shapes/Sphere.cpp.o	7da7dc2d0cf90ea3
+1944	2480	1733930448675764353	CMakeFiles/projects_realtime.dir/src/utils/camera.cpp.o	c55419a68f5b48eb
+211	814	1733881317768386879	CMakeFiles/StaticGLEW.dir/glew/src/glew.c.o	b635d46583b3fb68
+1855	3042	1733881319997630776	CMakeFiles/projects_realtime.dir/src/shapes/Cube.cpp.o	3db1c17ff924172c
 25	62	1733930446262745945	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/StaticGLEW_autogen/timestamp	b3b008bca999ce7f
 25	62	1733930446262745945	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/StaticGLEW_autogen/mocs_compilation.cpp	b3b008bca999ce7f
-1855	3042	1733881319997630776	CMakeFiles/projects_realtime.dir/src/shapes/Cube.cpp.o	3db1c17ff924172c
-211	814	1733881317768386879	CMakeFiles/StaticGLEW.dir/glew/src/glew.c.o	b635d46583b3fb68
-1944	2480	1733930448675764353	CMakeFiles/projects_realtime.dir/src/utils/camera.cpp.o	c55419a68f5b48eb
-1860	3020	1733881319973616342	CMakeFiles/projects_realtime.dir/src/shapes/Sphere.cpp.o	7da7dc2d0cf90ea3
-1944	1991	1733930448188601764	CMakeFiles/projects_realtime.dir/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/.rcc/qrc_Resources.cpp.o	663a630240ba75b0
-1943	3040	1733930449232681278	CMakeFiles/projects_realtime.dir/src/main.cpp.o	2ff3c946dde6f24b
-1943	2988	1733930449182338146	CMakeFiles/projects_realtime.dir/projects_realtime_autogen/mocs_compilation.cpp.o	9e008932cb12c7ef
-1059	1914	1733930448105788000	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-1944	3345	1733930449535297200	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-1914	1943	1733930448143625099	.rcc/qrc_Resources.cpp	3506f48cfd759d95
-1861	3589	1733881320542203052	CMakeFiles/projects_realtime.dir/src/utils/realtimeutils.cpp.o	5d69f4c293ecce6b
-1944	3173	1733930449365334685	CMakeFiles/projects_realtime.dir/src/mainwindow.cpp.o	cb7cd810c602b787
-1851	3931	1733881320886890701	CMakeFiles/projects_realtime.dir/src/utils/scenefilereader.cpp.o	8a9c793e11fa00dd
-13	52	1733939986280305579	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	52	1733939986280305579	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-13	52	1733939986280305579	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	52	1733939986280305579	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-56	1701	1733939987920074227	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-1701	1893	1733939988117009800	projects_realtime	4498c1d2a2e23edd
-12	75	1733940154723991066	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-12	75	1733940154723991066	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-12	75	1733940154723991066	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-12	75	1733940154723991066	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-80	2323	1733940156964077648	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-2323	2507	1733940157153969990	projects_realtime	4498c1d2a2e23edd
-11	93	1733940197546544902	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-11	93	1733940197546544902	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-11	93	1733940197546544902	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-11	93	1733940197546544902	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-97	3314	1733940200756486289	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3315	3503	1733940200954006004	projects_realtime	4498c1d2a2e23edd
-17	105	1733940310141248234	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-17	105	1733940310141248234	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-17	105	1733940310141248234	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-17	105	1733940310141248234	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-110	2130	1733940312159773989	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-2130	2313	1733940312351945018	projects_realtime	4498c1d2a2e23edd
-13	53	1733940446536972224	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	53	1733940446536972224	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-13	53	1733940446536972224	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	53	1733940446536972224	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-57	1468	1733940447942177226	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-1469	1656	1733940448136595410	projects_realtime	4498c1d2a2e23edd
-16	69	1733940466584716694	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-16	69	1733940466584716694	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-16	69	1733940466584716694	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-16	69	1733940466584716694	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-72	3546	1733940470052560457	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3547	3736	1733940470249059332	projects_realtime	4498c1d2a2e23edd
-23	237	1733940704701456199	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-23	237	1733940704701456199	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-23	237	1733940704701456199	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-23	237	1733940704701456199	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-242	3253	1733940707710279478	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3253	3438	1733940707900725113	projects_realtime	4498c1d2a2e23edd
-11	76	1733940724944928926	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-11	76	1733940724944928926	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-11	76	1733940724944928926	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-11	76	1733940724944928926	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-83	3382	1733940728241467059	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3382	3578	1733940728443590721	projects_realtime	4498c1d2a2e23edd
-13	69	1733940747877758902	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	69	1733940747877758902	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-13	69	1733940747877758902	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-13	69	1733940747877758902	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-73	3491	1733940751291681872	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3491	3674	1733940751480456231	projects_realtime	4498c1d2a2e23edd
-14	73	1733940767218197128	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-14	73	1733940767218197128	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-14	73	1733940767218197128	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-14	73	1733940767218197128	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-77	3219	1733940770355038281	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3219	3387	1733940770530698126	projects_realtime	4498c1d2a2e23edd
-12	67	1733940778066357816	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-12	67	1733940778066357816	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-12	67	1733940778066357816	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-12	67	1733940778066357816	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-72	3219	1733940781210726364	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
-3219	3397	1733940781393920186	projects_realtime	4498c1d2a2e23edd
-19	93	1733940834654556188	projects_realtime_autogen/timestamp	7d3debe6bca3d446
-19	93	1733940834654556188	projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
 19	93	1733940834654556188	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/timestamp	7d3debe6bca3d446
-19	93	1733940834654556188	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
-104	3140	1733940837695748986	CMakeFiles/projects_realtime.dir/src/realtime.cpp.o	f0d3981d0074410f
+19	93	1733940834654556188	projects_realtime_autogen/timestamp	7d3debe6bca3d446
+211	292	1733881317249466793	CMakeFiles/StaticGLEW.dir/StaticGLEW_autogen/mocs_compilation.cpp.o	272b326742c08f7d
 3140	3355	1733940837915537247	projects_realtime	4498c1d2a2e23edd
+1853	3623	1733881320575662109	CMakeFiles/projects_realtime.dir/src/utils/sceneparser.cpp.o	cf94055891a8a598
+1914	1943	1733930448143625099	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/.rcc/qrc_Resources.cpp	3506f48cfd759d95
+19	93	1733940834654556188	/Users/alexj/Documents/untitled folder 3/nighthawks/build/build-nighthawks-Qt_6_5_3_for_macOS-Debug/projects_realtime_autogen/mocs_compilation.cpp	7d3debe6bca3d446
+63	1003	1733930447196904552	CMakeFiles/StaticGLEW.dir/src/utils/camera.cpp.o	90a0565f9c1304ae
+25	62	1733930446262745945	StaticGLEW_autogen/mocs_compilation.cpp	b3b008bca999ce7f
+1944	2481	1733930448677433190	CMakeFiles/projects_realtime.dir/src/utils/bezier.cpp.o	f797b84a39722571
+91	1575	1733886571622320168	CMakeFiles/projects_realtime.dir/src/shapes/mesh.cpp.o	802658ea541387c3
+1851	2635	1733881319591963665	CMakeFiles/projects_realtime.dir/src/settings.cpp.o	dc0e75099f2e7dc2
+1003	1059	1733930447260216000	libStaticGLEW.a	b2439c3df4e609d5
+99	1829	1733889002187596025	CMakeFiles/projects_realtime.dir/src/shapes/building.cpp.o	268d88fd5de9296
+25	62	1733930446262745945	StaticGLEW_autogen/timestamp	b3b008bca999ce7f
+1860	3028	1733881319982997215	CMakeFiles/projects_realtime.dir/src/shapes/Cylinder.cpp.o	94eeccd3fee70ed0
+1858	3043	1733881319995849685	CMakeFiles/projects_realtime.dir/src/shapes/Cone.cpp.o	f6bb4da105dc9623

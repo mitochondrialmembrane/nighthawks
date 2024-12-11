@@ -20,10 +20,8 @@ Mesh::Mesh(glm::mat4 in_ctm, SceneMaterial in_mat, std::string meshFile) : Shape
  */
 void Mesh::parseFile(std::string meshFile, std::vector<glm::vec3>& faces, std::vector<glm::vec3>& vertices, std::vector<glm::vec3>& normals, std::vector<glm::vec3>& normal_indices) {
     QFile inputFile(QString::fromStdString(meshFile));
-    std::cout << "mesh file: " << meshFile << std::endl;
     if (inputFile.open(QIODevice::ReadOnly))
     {
-        std::cout << "opened" << std::endl;
         QTextStream in(&inputFile);
         glm::vec3 face;
         glm::vec3 normal_index;
